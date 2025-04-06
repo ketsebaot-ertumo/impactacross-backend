@@ -1,6 +1,7 @@
 const bcryptjs = require('bcryptjs');
 const { sequelize, Users, Blogs } = require('../models/index');
 const image = "https://drive.google.com/uc?id=1pMGXklJAHoz9YkE1udmLOLCofJhh9SPW";
+// const image = "https://res-console.cloudinary.com/dq6mvqivd/thumbnails/v1/image/upload/v1703147258/QmxvZyBQb3N0L21wdnZ0bTJ3bmNkMmJ1dm4ybm5r/folder_thumbnail/d184OCxoXzg4LGNfdGh1bWI=";
 
 (async () => {
   try {
@@ -46,7 +47,7 @@ const image = "https://drive.google.com/uc?id=1pMGXklJAHoz9YkE1udmLOLCofJhh9SPW"
         title: "5 Key Strategies for Effective Business Growth",
         slug: "business-growth-strategies",
         content: "Learn about proven strategies that consultants use to help clients drive sustainable growth and long-term success.",
-        imageURL: "https://drive.google.com/uc?id=1pMGXklJAHoz9YkE1udmLOLCofJhh9SPW",
+        imageURL: image,
         createdAt: new Date(),
         updatedAt: new Date(),
       },

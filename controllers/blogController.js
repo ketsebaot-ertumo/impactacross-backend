@@ -11,6 +11,7 @@ exports.getAllBlogs = async (req, res) => {
         const totalPages = Math.ceil(blogCount / pageSize);
 
         const blogs = await Blogs.findAll({
+            where: {name: "blog"},
             offset: (pageNumber - 1) * pageSize,
             limit: pageSize,
             order: [['createdAt', 'ASC']], 
@@ -33,7 +34,9 @@ exports.getBlogById = async (req, res) => {
       return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
     }
     try {
-      const blog = await Blogs.findByPk(id,);
+      const blog = await Blogs.findByPk(id,{
+        where: {name: "blog"},
+      });
       if (!blog) {
         return res.status(404).json({ success: false, message: "Blog not found." });
       }
@@ -58,7 +61,7 @@ exports.getBlogsForUser = async (req, res) => {
         const totalPages = Math.ceil(blogCount / pageSize);
 
         const blogs = await Blogs.findAll({
-            where: { userId },
+            where: { userId, name: "blog"},
             offset: (pageNumber - 1) * pageSize,
             limit: pageSize,
             order: [['createdAt', 'ASC']], 
@@ -78,6 +81,7 @@ exports.getBlogsForUser = async (req, res) => {
 exports.getLatestBlog = async (req, res) => {
     try {
       const blog = await Blogs.findOne({
+        where: {name: "blog"},
         order: [['createdAt', 'DESC']],
       });
       if (!blog) {
@@ -99,7 +103,7 @@ exports.createBlog = async (req, res) => {
     }
     const transaction = await sequelize.transaction(); 
     try {
-        const existingBlog = await Blogs.findOne({ where: { title, content, userId }, transaction });
+        const existingBlog = await Blogs.findOne({ where: { title, content, userId, name: "blog" }, transaction });
         if (existingBlog) {
             await transaction.rollback();
             return res.status(409).json({success: false, message: "A blog with this title and content already exists for this author" });
@@ -122,12 +126,12 @@ exports.createBlog = async (req, res) => {
 exports.updateBlog = async (req, res) => {
     const { ...updates } = req.body;
     const id = req.params.id;
-    if (!id) {
-        return res.status(400).json({ success:false, message: 'Please provide a blog id.' });
+    if (!id || !validator.isUUID(id)) {
+        return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
     }
     const t = await sequelize.transaction();
     try {
-        const blog = await Blogs.findByPk(id, { transaction: t, lock: t.LOCK.UPDATE});
+        const blog = await Blogs.findByPk(id, { where: {name: "blog"}, transaction: t, lock: t.LOCK.UPDATE});
         if (!blog) {
             await t.rollback();
             return res.status(404).json({ success: false, message: 'Blog not found.' });
@@ -150,12 +154,12 @@ exports.updateBlog = async (req, res) => {
 // Delete a blog post with transaction support
 exports.deleteBlog = async (req, res) => {
     const id = req.params.id;
-    if (!id) {
-        return res.status(400).json({ success:false, message: 'Please provide a blog id.' });
+    if (!id || !validator.isUUID(id)) {
+        return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
     }
     const t = await sequelize.transaction();
     try {
-        const blog = await Blogs.findByPk(id, { transaction: t, lock: t.LOCK.UPDATE});
+        const blog = await Blogs.findByPk(id, { where: {name: "blog"}, transaction: t, lock: t.LOCK.UPDATE});
         if (!blog) {
             await t.rollback();
             return res.status(404).json({ error: "Blog not found" });
