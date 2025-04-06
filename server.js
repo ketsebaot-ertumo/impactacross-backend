@@ -13,7 +13,7 @@ sequelize
     .authenticate()
     .then(() => {
         console.log('Connected to the database');
-        server.listen(PORT, () => {
+        app.listen(PORT, () => {
             console.log(`🚀 Server is running on http://localhost:${PORT}`);
         });
     })
@@ -28,7 +28,7 @@ app.use(cookieParser());
 app.use(cors());
 
 app.get("/", (req, res) => {
-    res.send("Welcome to `Consultancy Website Backend`!");
+    res.send("Welcome to `ImpactAcross Website Backend`!");
 });
 
 const rateLimit = require('express-rate-limit');
@@ -41,10 +41,10 @@ app.use(limiter);
 
 const authRoute = require('./routes/authRoute');
 const userRoute = require('./routes/userRoute');
-// const notificationRoute = require('./routes/notificationRoute');
-const blogRoutes = require('./routes/blogRoutes');
+// const serviceRoute = require('./routes/serviceRoute');
+const blogRoute = require('./routes/blogRoute');
 
 app.use('/api/auth', authRoute);
 app.use('/api/user', userRoute);
-// app.use('/api/notification', notificationRoute);
-app.use('/api/blog', blogRoutes);
+// app.use('/api/service', serviceRoute);
+app.use('/api/blog', blogRoute);

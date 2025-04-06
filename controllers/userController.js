@@ -50,9 +50,9 @@ exports.show = async (req, res) => {
           ],
         });
         return res.status(200).json({success: true, data: user});
-    }catch(err){
-        console.error(err);
-        return res.status(500).json({success: false, message:'Failed to show a user.', error:err.message});
+    }catch(error){
+        console.error(error);
+        return res.status(500).json({success: false, message:'Failed to show a user.', error:error.message});
     }
 }
 
@@ -79,9 +79,9 @@ exports.getAll = async (req, res, next) => {
       data: users,
       pagination: { total: userCount, page: pageNumber, pageSize, totalPages,}
     });
-  } catch (err) {
-    console.log('error occurred', err);
-    return res.status(500).json({ success: false,message: 'Failed to show all users.', error: err.message });
+  } catch (error) {
+    console.error('error occurred', error);
+    return res.status(500).json({ success: false,message: 'Failed to show all users.', error: error.message });
   }
 };
 
@@ -107,10 +107,10 @@ exports.update = async (req, res, next) => {
     }
     await t.commit();
     return res.status(200).json({ success: true, message: 'Updated successfully.', data: updatedUser,});
-  } catch (err) {
+  } catch (error) {
     await t.rollback();
-    console.log(err);
-    return res.status(500).json({ success: false, message: 'Server Error', error: err.message });
+    console.error(error);
+    return res.status(500).json({ success: false, message: 'Server Error', error: error.message });
   }
 };
 
@@ -134,9 +134,9 @@ exports.deleteUser = async (req, res) => {
     }
     await t.commit();
     return res.status(204).json({success: true, message: 'User deleted successfully', });
-  } catch (err) {
+  } catch (error) {
     await t.rollback();
-    console.error(err);
-    return res.status(500).json({ success: false, message: 'Failed to delete a user.', error: err.message,});
+    console.error(error);
+    return res.status(500).json({ success: false, message: 'Failed to delete a user.', error: error.message,});
   }
 };

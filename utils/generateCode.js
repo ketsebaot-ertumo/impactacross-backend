@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const generateConfirmationCode = () => {
-    // Generate a random alphanumeric string
+const generateCode = () => {
     const characters = '0123456789';
     let code = '';
     for (let i = 0; i < 6; i++) {
@@ -15,4 +14,4 @@ function generateToken() {
 }
 
 
-module.exports = { generateConfirmationCode, generateToken };
+module.exports = { generateCode, generateToken };

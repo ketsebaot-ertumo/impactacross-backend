@@ -1,7 +1,7 @@
 const { Op } = require('sequelize');
 const moment = require('moment');
-const { sendPasswordResetEmail, sendConfirmationEmail } = require('../utilis/sendEmail');
-const { generateCode } = require('../utilis/generateCode');
+const { sendPasswordResetEmail, sendConfirmationEmail } = require('../utils/sendEmail');
+const { generateCode } = require('../utils/generateCode');
 const { sequelize, Users } = require('../models/index');
 
 
@@ -90,7 +90,6 @@ exports.signin = async (req, res) => {
       return res.status(401).json({ success: false, message: "Invalid credential." });
     }
     sendTokenResponse(existingUser, 200, res);
-    
   } catch (error) {
     console.error(error);
     return res.status(500).json({ success: false, message: error.message, stack: error.stack });
