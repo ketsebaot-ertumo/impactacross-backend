@@ -1,5 +1,5 @@
-const { sequelize, Blogs } = require("../models"); // Sequelize instance
-
+const { sequelize, Blogs } = require("../models");
+const validator = require('validator');
 
 // Get all blogs with pagination
 exports.getAllBlogs = async (req, res) => {
@@ -29,8 +29,8 @@ exports.getAllBlogs = async (req, res) => {
 // Get a blog by ID
 exports.getBlogById = async (req, res) => {
     const { id } = req.params;
-    if (!id) {
-      return res.status(404).json({ success: false, message: "Missing a blog id!" });
+    if (!id || !validator.isUUID(id)) {
+      return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
     }
     try {
       const blog = await Blogs.findByPk(id,);
@@ -40,7 +40,6 @@ exports.getBlogById = async (req, res) => {
       return res.status(200).json({ success:true, data: blog });
     } catch (error) {
         console.error(error)
-        await transaction.rollback(); // Rollback on error
         return res.status(500).json({success:false, message: "Error fetching a blog", error: error.message });
     }
 };  
@@ -48,8 +47,8 @@ exports.getBlogById = async (req, res) => {
 // Get blogs for a specific user
 exports.getBlogsForUser = async (req, res) => {
     const userId = req.user.id || req.params.id;
-    if (!userId) {
-        return res.status(400).json({ message: 'Please provide a blog Id.' });
+    if (!userId || !validator.isUUID(userId)) {
+        return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
     }
     try {
         const { page, limit } = req.query;
@@ -79,7 +78,7 @@ exports.getBlogsForUser = async (req, res) => {
 exports.getLatestBlog = async (req, res) => {
     try {
       const blog = await Blogs.findOne({
-        order: [['createdAt', 'ASC']], 
+        order: [['createdAt', 'DESC']],
       });
       if (!blog) {
         return res.status(404).json({ success: false, message: "Blog not found." });
@@ -87,8 +86,7 @@ exports.getLatestBlog = async (req, res) => {
       return res.status(200).json({ success:true, data: blog });
     } catch (error) {
         console.error(error)
-        await transaction.rollback(); // Rollback on error
-        return res.status(500).json({success:false, message: "Error fetching a blog", error: error.message });
+        return res.status(500).json({success:false, message: "Error fetching a latest blog", error: error.message });
     }
 };
 

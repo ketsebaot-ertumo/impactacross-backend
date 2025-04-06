@@ -22,54 +22,54 @@ const image = "https://drive.google.com/uc?id=1pMGXklJAHoz9YkE1udmLOLCofJhh9SPW"
     }
 
     await Blogs.sync({ force: true });
-    const blogData = [
+    const data = [
       {
         userId: existingUser.id,
-        title: "The Future of AI in Web Development",
-        slug: "future-ai-web-development",
-        content: "Artificial Intelligence is revolutionizing web development. Artificial Intelligence is revolutionizing web development",
+        title: "The Future of AI in Business Consultancy",
+        slug: "future-ai-business-consultancy",
+        content: "Artificial Intelligence is transforming the consultancy landscape—enhancing decision-making, streamlining operations, and delivering smarter insights for clients.",
         imageURL: image,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
         userId: existingUser.id,
-        title: "The Benefits of Aromatherapy for Stress Relief",
-        slug: "benefits-of-aromatherapy",
-        content: "Aromatherapy is a powerful tool for reducing stress and enhancing relaxation. Learn how essential oils can improve your well-being.",
+        title: "Driving Digital Transformation in Organizations",
+        slug: "digital-transformation-strategy",
+        content: "Explore how consultancy firms are leading digital transformation initiatives to help businesses adapt, innovate, and stay competitive in the modern era.",
         imageURL: image,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
         userId: existingUser.id,
-        title: "5 Skincare Routines for a Healthy Glow",
-        slug: "skincare-routines-healthy-glow",
-        content: "Discover five essential skincare routines that will help you maintain a radiant and youthful appearance.",
+        title: "5 Key Strategies for Effective Business Growth",
+        slug: "business-growth-strategies",
+        content: "Learn about proven strategies that consultants use to help clients drive sustainable growth and long-term success.",
         imageURL: "https://drive.google.com/uc?id=1pMGXklJAHoz9YkE1udmLOLCofJhh9SPW",
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
         userId: existingUser.id,
-        title: "How to Choose the Right Massage for Your Needs",
-        slug: "choose-right-massage",
-        content: "Different types of massages provide different benefits. Find out which massage suits your body’s needs best.",
+        title: "How to Optimize Operations Through Lean Consulting",
+        slug: "optimize-operations-lean",
+        content: "Lean methodology helps companies reduce waste, improve processes, and increase efficiency. Discover how consultants implement it effectively.",
         imageURL: image,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
         userId: existingUser.id,
-        title: "The Science Behind Anti-Aging Facials",
-        slug: "science-of-anti-aging-facials",
-        content: "Learn about the latest skincare treatments that slow down the aging process and keep your skin looking fresh.",
+        title: "Leadership Development in the Age of Disruption",
+        slug: "leadership-development-disruption",
+        content: "Consultants play a key role in building leadership resilience and adaptability amid fast-changing business environments.",
         imageURL: image,
         createdAt: new Date(),
         updatedAt: new Date(),
-      },    
+      },   
     ]
-    await Blogs.bulkCreate(blogData);
+    await Blogs.bulkCreate(data);
 
     console.log('Seed data added successfully.');
   } catch (error) {
