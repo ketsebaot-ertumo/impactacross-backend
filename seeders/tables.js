@@ -1,7 +1,6 @@
 const bcryptjs = require('bcryptjs');
-const { sequelize, Users, Blogs } = require('../models/index');
-const image = "https://drive.google.com/uc?id=1pMGXklJAHoz9YkE1udmLOLCofJhh9SPW";
-// const image = "https://res-console.cloudinary.com/dq6mvqivd/thumbnails/v1/image/upload/v1703147258/QmxvZyBQb3N0L21wdnZ0bTJ3bmNkMmJ1dm4ybm5r/folder_thumbnail/d184OCxoXzg4LGNfdGh1bWI=";
+const { sequelize, Users, Blogs, Publications } = require('../models/index');
+const image = "https://res.cloudinary.com/dq6mvqivd/image/upload/v1687943665/ffhpji16uejnyhkht5v9.jpg";
 
 (async () => {
   try {
@@ -71,6 +70,47 @@ const image = "https://drive.google.com/uc?id=1pMGXklJAHoz9YkE1udmLOLCofJhh9SPW"
       },   
     ]
     await Blogs.bulkCreate(data);
+
+    await Publications.sync({ force: true });
+    const publicationData = [
+      {
+        name: "publications",
+        image: "https://res.cloudinary.com/dq6mvqivd/image/upload/v1686726440/cld-sample-4.jpg",
+        title: "Sustainable Urban Development in Africa",
+        content: "This publication explores the challenges and strategies in achieving sustainable urban development across the African continent, focusing on infrastructure, housing, and governance.",
+        author: "Dr. Abeba Tekle",
+        published_at: "2024-10-12",
+        userId: existingUser.id,
+      },
+      {
+        name: "publications",
+        image: "https://res.cloudinary.com/dq6mvqivd/image/upload/v1686726400/cld-sample-3.jpg",
+        title: "Climate Resilience and Policy Making",
+        content: "An in-depth analysis of policy frameworks that support climate resilience, with case studies from Ethiopia, Kenya, and Ghana.",
+        author: "Prof. Daniel Mensah",
+        published_at: "2023-05-30",
+        userId: existingUser.id,
+      },
+      {
+        name: "publications",
+        image: "https://res.cloudinary.com/dq6mvqivd/image/upload/v1686726300/cld-sample.jpg",
+        title: "Digital Transformation in Public Health",
+        content: "This report outlines how digital technologies are revolutionizing healthcare delivery and access in low-resource settings.",
+        author: "Dr. Sarah Alemu",
+        published_at: "2024-03-22",
+        userId: existingUser.id,
+      },
+      {
+        name: "publications",
+        image: "https://res.cloudinary.com/dq6mvqivd/image/upload/v1686726440/cld-sample-4.jpg",
+        title: "Gender Equity in Higher Education",
+        content: "A comprehensive review of gender inclusion policies and the impact of educational reforms on female representation in tertiary institutions.",
+        author: "Dr. Miriam Kassa",
+        published_at: "2023-09-08",
+        userId: existingUser.id,
+      },
+    ];
+    await Publications.bulkCreate(publicationData);
 
     console.log('Seed data added successfully.');
   } catch (error) {
