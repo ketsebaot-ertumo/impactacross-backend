@@ -11,11 +11,15 @@ exports.getAllPost = async (req, res) => {
         const totalPages = Math.ceil(postCount / pageSize);
 
         const publications = await Publications.findAll({
-            where: {name: "publication"},
+            // where: {name: "publication"},
             offset: (pageNumber - 1) * pageSize,
             limit: pageSize,
             order: [['createdAt', 'DESC']],
-        }); // Sorting by createdAt in ascending order
+        });
+
+        if(!publications || !publications.length){
+            return res.status(404).json({ success: false, message: "Post not found." });
+        }
         return res.status(200).json({ 
             success: true, 
             data: publications,
