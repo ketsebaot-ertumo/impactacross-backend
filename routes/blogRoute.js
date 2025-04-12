@@ -5,8 +5,8 @@ const router = express.Router();
 
 router.post('/',isAuthenticated, createBlog)
 router.get('/', getAllBlogs);
-router.get('/:id', getBlogById);
 router.get('/latest', getLatestBlog);
+router.get('/:id', getBlogById);
 router.get('/user/:id', getBlogsForUser);
 router.put('/:id',isAuthenticated, updateBlog);
 router.delete('/:id',isAuthenticated, deleteBlog)

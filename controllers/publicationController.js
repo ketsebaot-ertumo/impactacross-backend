@@ -18,7 +18,7 @@ exports.getAllPost = async (req, res) => {
         });
 
         if(!publications || !publications.length){
-            return res.status(404).json({ success: false, message: "Post not found." });
+            return res.status(404).json({ success: false, message: "Publication post not found." });
         }
         return res.status(200).json({ 
             success: true, 

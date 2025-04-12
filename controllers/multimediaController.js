@@ -46,9 +46,27 @@ exports.getAllMultimediaPosts = async (req, res) => {
 };
 
 
+// Get latest post
+exports.getLatestMultimediaPost = async (req, res) => {
+    try {
+      const post = await Multimedias.findOne({
+        where: {name: "Multimedias"},
+        order: [['createdAt', 'DESC']],
+      });
+      if (!post) {
+        return res.status(404).json({ success: false, message: "Post not found." });
+      }
+      return res.status(200).json({ success:true, data: post });
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({success:false, message: "Error fetching a latest post", error: error.message });
+    }
+};
+
 
 // Get a post by ID
 exports.getMultimediaPostById = async (req, res) => {
+    console.log("\n\nid:\n\n")
     const { id } = req.params;
     if (!id || !validator.isUUID(id)) {
       return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
@@ -97,23 +115,6 @@ exports.getMultimediaPostForUser = async (req, res) => {
         return res.status(500).json({ success:false, error: "Error fetching posts", details: error.message });
     }
 }; 
-
-// Get latest post
-exports.getLatestMultimediaPost = async (req, res) => {
-    try {
-      const post = await Multimedias.findOne({
-        where: {name: "Multimedias"},
-        order: [['createdAt', 'DESC']],
-      });
-      if (!post) {
-        return res.status(404).json({ success: false, message: "Post not found." });
-      }
-      return res.status(200).json({ success:true, data: post });
-    } catch (error) {
-        console.error(error)
-        return res.status(500).json({success:false, message: "Error fetching a latest post", error: error.message });
-    }
-};
 
 // Update multimedia
 exports.updateMultimedia = async (req, res) => {

@@ -1,6 +1,7 @@
 const { Trainings, Users } = require('../models');
 const { validationResult } = require('express-validator');
 const slugify = require('slugify');
+const validator = require('validator');
 
 exports.createTraining = async (req, res) => {
   const errors = validationResult(req);

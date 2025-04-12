@@ -4,9 +4,9 @@ const trainingController = require("../controllers/trainingController");
 
 router.post("/", trainingController.createTraining);
 router.get("/", trainingController.getAllTrainingPosts);
-router.get("/latest/:id", trainingController.getLatestTrainingPost);
+router.get("/latest", trainingController.getLatestTrainingPost);
 router.get("/:id", trainingController.getTrainingPostById);
-router.get("/user/:id", trainingController.getTrainingPostById);
+router.get("/user/:id", trainingController.getTrainingPostForUser);
 router.put("/:id", trainingController.updateTraining);
 router.delete("/:id", trainingController.deleteTraining);
 

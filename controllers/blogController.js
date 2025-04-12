@@ -11,11 +11,14 @@ exports.getAllBlogs = async (req, res) => {
         const totalPages = Math.ceil(blogCount / pageSize);
 
         const blogs = await Blogs.findAll({
-            where: {name: "blog"},
+            where: {name: "Blogs"},
             offset: (pageNumber - 1) * pageSize,
             limit: pageSize,
             order: [['createdAt', 'ASC']], 
-        }); // Sorting by createdAt in ascending order
+        });
+        if(!blogs || !blogs.length){
+            return res.status(404).json({ success: false, message: "Blog post not found." });
+        }
         return res.status(200).json({ 
             success: true, 
             data: blogs,
@@ -27,6 +30,25 @@ exports.getAllBlogs = async (req, res) => {
     }
 };
 
+
+// Get latest blog
+exports.getLatestBlog = async (req, res) => {
+    try {
+      const blog = await Blogs.findOne({
+        where: {name: "Blogs"},
+        order: [['createdAt', 'DESC']],
+      });
+      if (!blog) {
+        return res.status(404).json({ success: false, message: "Blog not found." });
+      }
+      return res.status(200).json({ success:true, data: blog });
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({success:false, message: "Error fetching a latest blog", error: error.message });
+    }
+};
+
+
 // Get a blog by ID
 exports.getBlogById = async (req, res) => {
     const { id } = req.params;
@@ -35,7 +57,7 @@ exports.getBlogById = async (req, res) => {
     }
     try {
       const blog = await Blogs.findByPk(id,{
-        where: {name: "blog"},
+        where: {name: "Blogs"},
       });
       if (!blog) {
         return res.status(404).json({ success: false, message: "Blog not found." });
@@ -77,22 +99,6 @@ exports.getBlogsForUser = async (req, res) => {
     }
 }; 
 
-// Get latest blog
-exports.getLatestBlog = async (req, res) => {
-    try {
-      const blog = await Blogs.findOne({
-        where: {name: "blog"},
-        order: [['createdAt', 'DESC']],
-      });
-      if (!blog) {
-        return res.status(404).json({ success: false, message: "Blog not found." });
-      }
-      return res.status(200).json({ success:true, data: blog });
-    } catch (error) {
-        console.error(error)
-        return res.status(500).json({success:false, message: "Error fetching a latest blog", error: error.message });
-    }
-};
 
 //Create a new blog post with transaction support
 exports.createBlog = async (req, res) => {
