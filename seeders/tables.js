@@ -77,7 +77,6 @@ const file = `https://drive.google.com/uc?export=download&id=${fileID}`;
     await Publications.sync({ force: true });
     const publicationData = [
       {
-        name: "publication",
         imageURL: image,
         title: "Sustainable Urban Development in Africa",
         content: "This publication explores the challenges and strategies in achieving sustainable urban development across the African continent, focusing on infrastructure, housing, and governance.",
@@ -87,7 +86,6 @@ const file = `https://drive.google.com/uc?export=download&id=${fileID}`;
         userId: existingUser.id,
       },
       {
-        name: "publication",
         imageURL: image,
         title: "Climate Resilience and Policy Making",
         content: "An in-depth analysis of policy frameworks that support climate resilience, with case studies from Ethiopia, Kenya, and Ghana.",
@@ -97,7 +95,6 @@ const file = `https://drive.google.com/uc?export=download&id=${fileID}`;
         userId: existingUser.id,
       },
       {
-        name: "publication",
         imageURL: image,
         title: "Digital Transformation in Public Health",
         content: "This report outlines how digital technologies are revolutionizing healthcare delivery and access in low-resource settings.",
@@ -107,7 +104,6 @@ const file = `https://drive.google.com/uc?export=download&id=${fileID}`;
         userId: existingUser.id,
       },
       {
-        name: "publication",
         imageURL: image,
         title: "Gender Equity in Higher Education",
         content: "A comprehensive review of gender inclusion policies and the impact of educational reforms on female representation in tertiary institutions.",
@@ -127,7 +123,7 @@ const file = `https://drive.google.com/uc?export=download&id=${fileID}`;
         description: "An engaging video covering the basics of AI and its real-world applications.",
         mediaType: "Video",
         mediaURL: "https://example.com/videos/ai-intro.mp4",
-        thumbnail: "https://example.com/thumbnails/ai-intro.jpg",
+        thumbnailURL: "https://example.com/thumbnails/ai-intro.jpg",
         tags: ["AI", "Technology", "Machine Learning"],
         publishedAt: new Date("2024-10-15"),
         status: "Published",
@@ -138,7 +134,7 @@ const file = `https://drive.google.com/uc?export=download&id=${fileID}`;
         description: "Downloadable PDF book covering practical data science techniques and case studies.",
         mediaType: "Video",
         mediaURL: "https://example.com/videos/ai-intro.mp4",
-        thumbnail: null,
+        mimeType: "video/mp4",
         tags: ["Data Science", "PDF", "Analytics"],
         publishedAt: new Date("2024-09-05"),
         status: "Published",
@@ -149,7 +145,8 @@ const file = `https://drive.google.com/uc?export=download&id=${fileID}`;
         description: "Informative podcast episode discussing the fundamentals of digital security.",
         mediaType: "Video",
         mediaURL: "https://example.com/videos/ai-intro.mp4",
-        thumbnail: "https://example.com/thumbnails/cybersecurity.jpg",
+        mimeType: "video/mp4",
+        thumbnailURL: "https://example.com/thumbnails/cybersecurity.jpg",
         tags: ["Security", "Cybersecurity", "Podcast"],
         publishedAt: new Date("2025-01-12"),
         status: "Draft",

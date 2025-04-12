@@ -11,7 +11,7 @@ exports.getAllPost = async (req, res) => {
         const totalPages = Math.ceil(postCount / pageSize);
 
         const publications = await Publications.findAll({
-            where: {name: "publication"},
+            where: {name: "Publications"},
             offset: (pageNumber - 1) * pageSize,
             limit: pageSize,
             order: [['createdAt', 'DESC']],
@@ -31,8 +31,26 @@ exports.getAllPost = async (req, res) => {
     }
 };
 
+// Get latest post
+exports.getLatestPublicationPost = async (req, res) => {
+    try {
+      const publication = await Publications.findOne({
+        where: {name: "Publications"},
+        order: [['createdAt', 'DESC']],
+      });
+      if (!publication) {
+        return res.status(404).json({ success: false, message: "Post not found." });
+      }
+      return res.status(200).json({ success:true, data: publication });
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({success:false, message: "Error fetching a latest post", error: error.message });
+    }
+};
+
+
 // Get a post by ID
-exports.getPostById = async (req, res) => {
+exports.getPublicationPostById = async (req, res) => {
     const { id } = req.params;
     if (!id || !validator.isUUID(id)) {
       return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
@@ -81,22 +99,6 @@ exports.getPostForUser = async (req, res) => {
     }
 }; 
 
-// Get latest post
-exports.getLatestPost = async (req, res) => {
-    try {
-      const publication = await Publications.findOne({
-        where: {name: "publication"},
-        order: [['createdAt', 'DESC']],
-      });
-      if (!publication) {
-        return res.status(404).json({ success: false, message: "Post not found." });
-      }
-      return res.status(200).json({ success:true, data: publication });
-    } catch (error) {
-        console.error(error)
-        return res.status(500).json({success:false, message: "Error fetching a latest post", error: error.message });
-    }
-};
 
 //Create a new post with transaction support
 exports.createPost = async (req, res) => {
@@ -127,7 +129,8 @@ exports.createPost = async (req, res) => {
 };
 
 // Update a post with transaction and row locking
-exports.updatePost = async (req, res) => {
+exports.updatePublicationPost = async (req, res) => {
+    console.log("\n\nedit")
     const { ...updates } = req.body;
     const id = req.params.id;
     if (!id || !validator.isUUID(id)) {
@@ -156,8 +159,9 @@ exports.updatePost = async (req, res) => {
       
 
 // Delete a post with transaction support
-exports.deletePost = async (req, res) => {
+exports.deletePublicationPost = async (req, res) => {
     const id = req.params.id;
+    console.log("\n\ndelete")
     if (!id || !validator.isUUID(id)) {
         return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
     }

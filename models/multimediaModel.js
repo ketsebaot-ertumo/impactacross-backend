@@ -59,6 +59,17 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true,
             comment: "E.g., video/mp4, image/jpeg",
         },
+        tags: {
+            type: DataTypes.ARRAY(DataTypes.STRING),
+            allowNull: true,
+            validate: {
+              isArrayOfStrings(value) {
+                if (!Array.isArray(value) || !value.every(tag => typeof tag === 'string')) {
+                  throw new Error('Tags must be an array of strings');
+                }
+              }
+            }
+        },          
         status: {
             type: DataTypes.ENUM("Draft", "Published", "Archived"),
             defaultValue: "Published",
