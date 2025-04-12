@@ -61,7 +61,7 @@ exports.getBlogsForUser = async (req, res) => {
         const totalPages = Math.ceil(blogCount / pageSize);
 
         const blogs = await Blogs.findAll({
-            where: { userId, name: "blog"},
+            where: { userId, name: "Blogs"},
             offset: (pageNumber - 1) * pageSize,
             limit: pageSize,
             order: [['createdAt', 'ASC']], 
@@ -103,7 +103,7 @@ exports.createBlog = async (req, res) => {
     }
     const transaction = await sequelize.transaction(); 
     try {
-        const existingBlog = await Blogs.findOne({ where: { title, content, userId, name: "blog" }, transaction });
+        const existingBlog = await Blogs.findOne({ where: { title, content, userId, name: "Blogs" }, transaction });
         if (existingBlog) {
             await transaction.rollback();
             return res.status(409).json({success: false, message: "A blog with this title and content already exists for this author" });

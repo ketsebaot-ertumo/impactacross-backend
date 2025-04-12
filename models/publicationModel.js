@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         name: {
             type: DataTypes.STRING,
             allowNull: false,
-            defaultValue: "publication"
+            defaultValue: "Publications"
         },
         author: {
             type: DataTypes.STRING,

@@ -11,7 +11,7 @@ exports.getAllPost = async (req, res) => {
         const totalPages = Math.ceil(postCount / pageSize);
 
         const publications = await Publications.findAll({
-            // where: {name: "publication"},
+            where: {name: "publication"},
             offset: (pageNumber - 1) * pageSize,
             limit: pageSize,
             order: [['createdAt', 'DESC']],
@@ -39,7 +39,7 @@ exports.getPostById = async (req, res) => {
     }
     try {
       const publication = await Publications.findByPk(id,{
-        where: {name: "publication"},
+        where: {name: "Publications"},
       });
       if (!publication) {
         return res.status(404).json({ success: false, message: "Post not found." });
@@ -65,7 +65,7 @@ exports.getPostForUser = async (req, res) => {
         const totalPages = Math.ceil(postCount / pageSize);
 
         const publications = await Publications.findAll({
-            where: { userId, name: "publication"},
+            where: { userId, name: "Publications"},
             offset: (pageNumber - 1) * pageSize,
             limit: pageSize,
             order: [['createdAt', 'DESC']],
@@ -107,7 +107,7 @@ exports.createPost = async (req, res) => {
     }
     const transaction = await sequelize.transaction(); 
     try {
-        const existingPost = await Publications.findOne({ where: { title, content, userId, name: "publication" }, transaction });
+        const existingPost = await Publications.findOne({ where: { title, content, userId, name: "Publications" }, transaction });
         if (existingPost) {
             await transaction.rollback();
             return res.status(409).json({success: false, message: "A post already exists for this author" });

@@ -4,9 +4,9 @@ const { isAuthenticated } = require('../middleware/auth');
 const router = express.Router();
 
 
-router.get('/getAll', isAuthenticated, getAll);
+router.get('/', isAuthenticated, getAll);
 router.get('/:userId?', isAuthenticated, show);
-router.put('/edit/:userId?',isAuthenticated, update);
-router.delete('/delete/:userId?',isAuthenticated, deleteUser)
+router.put('/:userId?',isAuthenticated, update);
+router.delete('/:userId',isAuthenticated, deleteUser)
 
 module.exports = router;

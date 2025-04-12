@@ -44,9 +44,13 @@ const userRoute = require('./routes/userRoute');
 // const serviceRoute = require('./routes/serviceRoute');
 const blogRoute = require('./routes/blogRoute');
 const publicationRoute = require('./routes/publicationRoute');
+const multimediaRoute = require('./routes/multimediaRoute');
+const trainingRoute = require('./routes/trainingRoute');
 
 app.use('/api/auth', authRoute);
 app.use('/api/user', userRoute);
 // app.use('/api/service', serviceRoute);
 app.use('/api/blog', blogRoute);
 app.use('/api/publication', publicationRoute);
+app.use('/api/multimedia', multimediaRoute);
+app.use('/api/training', trainingRoute);
