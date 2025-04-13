@@ -29,7 +29,7 @@ exports.getAllTrainingPosts = async (req, res) => {
         const totalPages = Math.ceil(postCount / pageSize);
 
         const posts = await Trainings.findAll({
-            where: {name: "Trainings"},
+            where: {name: "trainings"},
             offset: (pageNumber - 1) * pageSize,
             limit: pageSize,
             order: [['createdAt', 'DESC']],
@@ -58,7 +58,7 @@ exports.getTrainingPostById = async (req, res) => {
     }
     try {
       const post = await Trainings.findByPk(id,{
-        where: {name: "Trainings"},
+        where: {name: "trainings"},
       });
       if (!post) {
         return res.status(404).json({ success: false, message: "Post not found." });
@@ -86,7 +86,7 @@ exports.getTrainingPostForUser = async (req, res) => {
         const totalPages = Math.ceil(postCount / pageSize);
 
         const posts = await Trainings.findAll({
-            where: { userId, name: "Trainings"},
+            where: { userId, name: "trainings"},
             offset: (pageNumber - 1) * pageSize,
             limit: pageSize,
             order: [['createdAt', 'DESC']],
@@ -106,7 +106,7 @@ exports.getTrainingPostForUser = async (req, res) => {
 exports.getLatestTrainingPost = async (req, res) => {
     try {
       const post = await Trainings.findOne({
-        where: {name: "Trainings"},
+        where: {name: "trainings"},
         order: [['createdAt', 'DESC']],
       });
       if (!post) {
@@ -123,27 +123,35 @@ exports.getLatestTrainingPost = async (req, res) => {
 // update training
 exports.updateTraining = async (req, res) => {
   try {
-    const training = await Trainings.findByPk(req.params.id);
+    const id = req.params.id;
+    if (!id || !validator.isUUID(id)) {
+      return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
+    }
+    const training = await Trainings.findByPk(id, { where: {name: "trainings"},});
     if (!training) return res.status(404).json({ message: 'Training not found' });
 
     const updates = req.body;
     if (updates.title) updates.slug = slugify(updates.title, { lower: true, strict: true });
 
     await training.update(updates);
-    res.status(200).json({ message: 'Training updated', training });
+    return res.status(200).json({ message: 'Training updated', training });
   } catch (err) {
-    res.status(500).json({ error: 'Failed to update training' });
+    return res.status(500).json({ error: 'Failed to update training' });
   }
 };
 
 exports.deleteTraining = async (req, res) => {
   try {
-    const training = await Trainings.findByPk(req.params.id);
+    const id = req.params.id;
+    if (!id || !validator.isUUID(id)) {
+      return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
+    }
+    const training = await Trainings.findByPk(id, { where: {name: "trainings"},});
     if (!training) return res.status(404).json({ message: 'Training not found' });
 
     await training.destroy();
-    res.status(200).json({ message: 'Training deleted successfully' });
+    return res.status(200).json({ message: 'Training deleted successfully' });
   } catch (err) {
-    res.status(500).json({ error: 'Failed to delete training' });
+    return res.status(500).json({ error: 'Failed to delete training' });
   }
 };

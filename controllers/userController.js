@@ -41,8 +41,8 @@ exports.createUser = async (req, res) => {
 exports.show = async (req, res) => {
     try{
         const id = req.params.id || req.user.id;
-        if (!id) {
-            return res.status(400).json({ message: 'Please provide a user Id.' });
+        if (!id || !validator.isUUID(id)) {
+          return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
         }
         const user = await Users.findByPk(id, {
           include: [
@@ -90,8 +90,8 @@ exports.getAll = async (req, res, next) => {
 exports.update = async (req, res, next) => {
   const { ...updates } = req.body;
   const id = req.params.id || req.user.id;
-  if (!id) {
-      return res.status(400).json({ message: 'Please provide a user Id.' });
+  if (!id || !validator.isUUID(id)) {
+      return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
   }
   const t = await sequelize.transaction();
   try {
@@ -120,8 +120,8 @@ exports.deleteUser = async (req, res) => {
   const t = await sequelize.transaction();
   try {
     const id = req.params.id || req.user.id;
-    if (!id) {
-        return res.status(400).json({ success: false, message: 'Please provide a user Id.' });
+    if (!id || !validator.isUUID(id)) {
+      return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
     }
     const user = await Users.findByPk(id, { transaction: t, lock: t.LOCK.UPDATE });
     if (!user) {

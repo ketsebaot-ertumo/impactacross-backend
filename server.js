@@ -25,7 +25,12 @@ app.use(morgan('dev'));
 app.use(bodyParser.json({ limit: "25mb" }));
 app.use(bodyParser.urlencoded({ limit: "25mb", extended: true }));
 app.use(cookieParser());
-app.use(cors());
+// app.use(cors());
+const corsOptions = {
+    origin: ['http://localhost:3000', 'https://imapctacross.com'],
+    methods: 'GET,PUT,POST,DELETE',
+};
+app.use(cors(corsOptions));
 
 app.get("/", (req, res) => {
     res.send("Welcome to `ImpactAcross Website Backend`!");

@@ -25,7 +25,7 @@ exports.getAllMultimediaPosts = async (req, res) => {
         const totalPages = Math.ceil(postCount / pageSize);
 
         const posts = await Multimedias.findAll({
-            where: {name: "Multimedias"},
+            where: {name: "multimedias"},
             offset: (pageNumber - 1) * pageSize,
             limit: pageSize,
             order: [['createdAt', 'DESC']],
@@ -50,7 +50,7 @@ exports.getAllMultimediaPosts = async (req, res) => {
 exports.getLatestMultimediaPost = async (req, res) => {
     try {
       const post = await Multimedias.findOne({
-        where: {name: "Multimedias"},
+        where: {name: "multimedias"},
         order: [['createdAt', 'DESC']],
       });
       if (!post) {
@@ -73,7 +73,7 @@ exports.getMultimediaPostById = async (req, res) => {
     }
     try {
       const post = await Multimedias.findByPk(id,{
-        where: {name: "Multimedias"},
+        where: {name: "multimedias"},
       });
       if (!post) {
         return res.status(404).json({ success: false, message: "Post not found." });
@@ -100,7 +100,7 @@ exports.getMultimediaPostForUser = async (req, res) => {
         const totalPages = Math.ceil(postCount / pageSize);
 
         const posts = await Multimedias.findAll({
-            where: { userId, name: "Multimedias"},
+            where: { userId, name: "multimedias"},
             offset: (pageNumber - 1) * pageSize,
             limit: pageSize,
             order: [['createdAt', 'DESC']],
@@ -119,9 +119,12 @@ exports.getMultimediaPostForUser = async (req, res) => {
 // Update multimedia
 exports.updateMultimedia = async (req, res) => {
   try {
-    const { id } = req.params;
-    const updated = await Multimedia.update(req.body, {
-      where: { id },
+    const id = req.params.id;
+    if (!id || !validator.isUUID(id)) {
+      return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
+    }
+    const updated = await Multimedias.update(req.body, {
+      where: { id,  name: "multimedias", },
       returning: true,
     });
 
@@ -138,8 +141,11 @@ exports.updateMultimedia = async (req, res) => {
 // Delete multimedia
 exports.deleteMultimedia = async (req, res) => {
   try {
-    const { id } = req.params;
-    const deleted = await Multimedia.destroy({ where: { id } });
+    const id = req.params.id;
+    if (!id || !validator.isUUID(id)) {
+      return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
+    }
+    const deleted = await Multimedias.destroy({ where: { id } });
 
     if (!deleted) {
       return res.status(404).json({ success: false, message: "Multimedia not found." });

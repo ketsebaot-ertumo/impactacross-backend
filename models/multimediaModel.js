@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         name: {
             type: DataTypes.STRING,
             allowNull: false,
-            defaultValue: "Multimedias"
+            defaultValue: "multimedias"
         },
         //   categoryId: {
         //     type: DataTypes.UUID,

@@ -11,7 +11,7 @@ exports.getAllPost = async (req, res) => {
         const totalPages = Math.ceil(postCount / pageSize);
 
         const publications = await Publications.findAll({
-            where: {name: "Publications"},
+            where: {name: "publications"},
             offset: (pageNumber - 1) * pageSize,
             limit: pageSize,
             order: [['createdAt', 'DESC']],
@@ -35,7 +35,7 @@ exports.getAllPost = async (req, res) => {
 exports.getLatestPublicationPost = async (req, res) => {
     try {
       const publication = await Publications.findOne({
-        where: {name: "Publications"},
+        where: {name: "publications"},
         order: [['createdAt', 'DESC']],
       });
       if (!publication) {
@@ -51,13 +51,13 @@ exports.getLatestPublicationPost = async (req, res) => {
 
 // Get a post by ID
 exports.getPublicationPostById = async (req, res) => {
-    const { id } = req.params;
+    const id = req.params.id;
     if (!id || !validator.isUUID(id)) {
       return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
     }
     try {
       const publication = await Publications.findByPk(id,{
-        where: {name: "Publications"},
+        where: {name: "publications"},
       });
       if (!publication) {
         return res.status(404).json({ success: false, message: "Post not found." });
@@ -83,11 +83,11 @@ exports.getPostForUser = async (req, res) => {
         const totalPages = Math.ceil(postCount / pageSize);
 
         const publications = await Publications.findAll({
-            where: { userId, name: "Publications"},
+            where: { userId, name: "publications"},
             offset: (pageNumber - 1) * pageSize,
             limit: pageSize,
             order: [['createdAt', 'DESC']],
-        }); // Sorting by createdAt in ascending order
+        });
         return res.status(200).json({ 
             success: true, 
             data: publications,
@@ -109,7 +109,7 @@ exports.createPost = async (req, res) => {
     }
     const transaction = await sequelize.transaction(); 
     try {
-        const existingPost = await Publications.findOne({ where: { title, content, userId, name: "Publications" }, transaction });
+        const existingPost = await Publications.findOne({ where: { title, content, userId, name: "publications" }, transaction });
         if (existingPost) {
             await transaction.rollback();
             return res.status(409).json({success: false, message: "A post already exists for this author" });
@@ -130,7 +130,6 @@ exports.createPost = async (req, res) => {
 
 // Update a post with transaction and row locking
 exports.updatePublicationPost = async (req, res) => {
-    console.log("\n\nedit")
     const { ...updates } = req.body;
     const id = req.params.id;
     if (!id || !validator.isUUID(id)) {
@@ -138,7 +137,7 @@ exports.updatePublicationPost = async (req, res) => {
     }
     const t = await sequelize.transaction();
     try {
-        const publication = await Publications.findByPk(id, { where: {name: "publication"}, transaction: t, lock: t.LOCK.UPDATE});
+        const publication = await Publications.findByPk(id, { where: {name: "publications"}, transaction: t, lock: t.LOCK.UPDATE});
         if (!publication) {
             await t.rollback();
             return res.status(404).json({ success: false, message: 'Post not found.' });
@@ -161,13 +160,12 @@ exports.updatePublicationPost = async (req, res) => {
 // Delete a post with transaction support
 exports.deletePublicationPost = async (req, res) => {
     const id = req.params.id;
-    console.log("\n\ndelete")
     if (!id || !validator.isUUID(id)) {
         return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
     }
     const t = await sequelize.transaction();
     try {
-        const publication = await Publications.findByPk(id, { where: {name: "publication"}, transaction: t, lock: t.LOCK.UPDATE});
+        const publication = await Publications.findByPk(id, { where: {name: "publications"}, transaction: t, lock: t.LOCK.UPDATE});
         if (!publication) {
             await t.rollback();
             return res.status(404).json({ error: "Post not found" });

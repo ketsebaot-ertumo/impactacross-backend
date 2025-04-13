@@ -1,4 +1,3 @@
-// models/Training.js
 
 module.exports = (sequelize, DataTypes) => {
     const Training = sequelize.define('Trainings', {
@@ -18,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: "Trainings"
+        defaultValue: "trainings"
       },
       title: {
         type: DataTypes.STRING,
