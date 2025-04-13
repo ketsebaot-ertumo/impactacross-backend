@@ -123,7 +123,7 @@ exports.createBlog = async (req, res) => {
 
     } catch (error) {
         console.error(error)
-        await transaction.rollback(); // Rollback transaction on error
+        await transaction.rollback();
         return res.status(500).json({ success: false, message: "Failed to create blog", error: error.message });
     }
 };
