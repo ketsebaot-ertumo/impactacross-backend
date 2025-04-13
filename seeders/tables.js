@@ -3,6 +3,7 @@ const { sequelize, Users, Blogs, Publications, Multimedias, Trainings } = requir
 const image = "https://res.cloudinary.com/dq6mvqivd/image/upload/v1687943665/ffhpji16uejnyhkht5v9.jpg";
 const fileID = "1SKy_npi510qn4zAIVz1FeNgtYNDXMoIO";
 const file = `https://drive.google.com/uc?export=download&id=${fileID}`;
+const media = "https://youtu.be/iGQ6KfyH5Vs?si=CDGjhHu3py9_nrt8";
 
 
 (async () => {
@@ -120,10 +121,9 @@ const file = `https://drive.google.com/uc?export=download&id=${fileID}`;
       {
         userId: existingUser.id,
         title: "Introduction to Artificial Intelligence",
-        description: "An engaging video covering the basics of AI and its real-world applications.",
-        mediaType: "Video",
-        mediaURL: "https://example.com/videos/ai-intro.mp4",
-        thumbnailURL: "https://example.com/thumbnails/ai-intro.jpg",
+        content: "An engaging video covering the basics of AI and its real-world applications.",
+        mediaType: "Image",
+        mediaURL: image,
         tags: ["AI", "Technology", "Machine Learning"],
         publishedAt: new Date("2024-10-15"),
         status: "Published",
@@ -131,10 +131,8 @@ const file = `https://drive.google.com/uc?export=download&id=${fileID}`;
       {
         userId: existingUser.id,
         title: "Data Science eBook",
-        description: "Downloadable PDF book covering practical data science techniques and case studies.",
-        mediaType: "Video",
-        mediaURL: "https://example.com/videos/ai-intro.mp4",
-        mimeType: "video/mp4",
+        content: "Downloadable PDF book covering practical data science techniques and case studies.",
+        mediaURL: image,
         tags: ["Data Science", "PDF", "Analytics"],
         publishedAt: new Date("2024-09-05"),
         status: "Published",
@@ -144,9 +142,7 @@ const file = `https://drive.google.com/uc?export=download&id=${fileID}`;
         title: "Cybersecurity Essentials",
         description: "Informative podcast episode discussing the fundamentals of digital security.",
         mediaType: "Video",
-        mediaURL: "https://example.com/videos/ai-intro.mp4",
-        mimeType: "video/mp4",
-        thumbnailURL: "https://example.com/thumbnails/cybersecurity.jpg",
+        mediaURL: image,
         tags: ["Security", "Cybersecurity", "Podcast"],
         publishedAt: new Date("2025-01-12"),
         status: "Draft",
@@ -160,7 +156,7 @@ const file = `https://drive.google.com/uc?export=download&id=${fileID}`;
         userId: existingUser.id,
         title: "Advanced Web Development Bootcamp",
         slug: "advanced-web-development-bootcamp",
-        description: "An intensive training program covering frontend and backend development.",
+        content: "An intensive training program covering frontend and backend development.",
         trainingType: "Offline",
         location: "Addis Ababa Tech Hub",
         startDate: "2025-05-01",
@@ -174,7 +170,7 @@ const file = `https://drive.google.com/uc?export=download&id=${fileID}`;
         userId: existingUser.id,
         title: "Remote Leadership Skills",
         slug: "remote-leadership-skills",
-        description: "Learn how to lead teams effectively in a remote or hybrid environment.",
+        content: "Learn how to lead teams effectively in a remote or hybrid environment.",
         trainingType: "Online",
         location: null,
         startDate: "2025-04-15",
@@ -188,7 +184,7 @@ const file = `https://drive.google.com/uc?export=download&id=${fileID}`;
         userId: existingUser.id,
         title: "Digital Marketing 101",
         slug: "digital-marketing-101",
-        description: "A hybrid training introducing SEO, social media, and email marketing strategies.",
+        content: "A hybrid training introducing SEO, social media, and email marketing strategies.",
         trainingType: "Hybrid",
         location: "Zoom + Nairobi Innovation Hub",
         startDate: "2025-06-01",

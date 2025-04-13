@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         unique: true,
       },
-      description: {
+      content: {
         type: DataTypes.TEXT,
         allowNull: false,
       },
