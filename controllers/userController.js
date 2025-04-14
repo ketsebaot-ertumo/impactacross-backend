@@ -123,6 +123,9 @@ exports.deleteUser = async (req, res) => {
     if (!id || !validator.isUUID(id)) {
       return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
     }
+    if (req?.user?.role === 'admin') {
+      return res.status(400).json({ success: false, message: 'Can not deleted the user with "admin" role.' });
+    }
     const user = await Users.findByPk(id, { transaction: t, lock: t.LOCK.UPDATE });
     if (!user) {
       await t.rollback();

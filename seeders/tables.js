@@ -140,7 +140,7 @@ const media = "https://youtu.be/iGQ6KfyH5Vs?si=CDGjhHu3py9_nrt8";
       {
         userId: existingUser.id,
         title: "Cybersecurity Essentials",
-        description: "Informative podcast episode discussing the fundamentals of digital security.",
+        content: "Informative podcast episode discussing the fundamentals of digital security.",
         mediaType: "Video",
         mediaURL: image,
         tags: ["Security", "Cybersecurity", "Podcast"],
