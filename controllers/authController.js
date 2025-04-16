@@ -1,5 +1,6 @@
 const { Op } = require('sequelize');
 const moment = require('moment');
+const bcryptjs = require('bcryptjs');
 const { sendPasswordResetEmail, sendConfirmationEmail } = require('../utils/sendEmail');
 const { generateCode } = require('../utils/generateCode');
 const { sequelize, Users } = require('../models/index');
@@ -165,7 +166,7 @@ exports.reset = async (req, res) => {
       return res.status(410).json({ success: false, message: "Reset code expired. Please request a new one." });
     }
     // Hash the new password
-    existingUser.password = await bcrypt.hash(password, 10);
+    existingUser.password = await bcryptjs.hash(password, 10);
     existingUser.resetCode = null;
     await existingUser.save({ transaction });
     await transaction.commit();
