@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { sequelize, Users, Bookings, Services, Notifications } = require('../models/index');
+const { sequelize, Users } = require('../models/index');
 
 
 // capitalize names
@@ -44,11 +44,7 @@ exports.show = async (req, res) => {
         if (!id || !validator.isUUID(id)) {
           return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
         }
-        const user = await Users.findByPk(id, {
-          include: [
-            { model: Notifications, as: 'notification'},
-          ],
-        });
+        const user = await Users.findByPk(id);
         return res.status(200).json({success: true, data: user});
     }catch(error){
         console.error(error);
@@ -67,9 +63,6 @@ exports.getAll = async (req, res, next) => {
     const totalPages = Math.ceil(userCount / pageSize);
     const users = await Users.findAll({
       // where: {role: 'admin'},
-      include: [
-        { model: Notifications, as: 'notification'},
-      ],
       offset: (pageNumber - 1) * pageSize,
       limit: pageSize,
       order: [['createdAt', 'ASC']], 

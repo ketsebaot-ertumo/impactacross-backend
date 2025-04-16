@@ -108,6 +108,7 @@ exports.logout = async (req, res, next) => {
   }
 }
 
+
 //user forgot password
 exports.forgot = async (req, res) => {
   const { email } = req.body;
@@ -118,7 +119,6 @@ exports.forgot = async (req, res) => {
   try {
     // Generate a unique reset code
     const resetCode = generateCode();
-    // Atomically update user with the reset code
     const [updated] = await Users.update(
       { resetCode },
       { where: { email: { [Op.iLike]: email } }, transaction: t }
@@ -127,7 +127,8 @@ exports.forgot = async (req, res) => {
       await t.rollback();
       return res.status(404).json({ success: false, message: "No account found with this email." });
     }
-    const resetLink = `${process.env.CLIENT_URL}/auth/reset/${resetCode}`;
+
+    const resetLink = `${process.env.CLIENT_URL}/${resetCode}`;
     await sendPasswordResetEmail(email, resetLink);
     await t.commit();
     return res.status(200).json({ success: true, message: "Reset code sent successfully." });

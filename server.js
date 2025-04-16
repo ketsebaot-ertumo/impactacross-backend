@@ -25,12 +25,23 @@ app.use(morgan('dev'));
 app.use(bodyParser.json({ limit: "25mb" }));
 app.use(bodyParser.urlencoded({ limit: "25mb", extended: true }));
 app.use(cookieParser());
+
 // app.use(cors());
+const allowedOrigins = ['http://localhost:3000', 'https://fana.spa.com'];
 const corsOptions = {
-    origin: ['http://localhost:3000', 'https://imapctacross.com'],
-    methods: 'GET,PUT,POST,DELETE',
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,  // Enable credentials (cookies, authorization headers, etc.)
+    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'], // Customize headers as needed
+    preflightContinue: false,  // Automatically send response for preflight request
 };
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 app.get("/", (req, res) => {
     res.send("Welcome to `ImpactAcross Website Backend`!");
