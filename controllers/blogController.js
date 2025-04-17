@@ -14,7 +14,7 @@ exports.getAllBlogs = async (req, res) => {
             where: {name: "blogs"},
             offset: (pageNumber - 1) * pageSize,
             limit: pageSize,
-            order: [['createdAt', 'ASC']], 
+            order: [['updatedAt', 'DESC']],
         });
         if(!blogs || !blogs.length){
             return res.status(404).json({ success: false, message: "Blog post not found." });
@@ -36,7 +36,7 @@ exports.getLatestBlog = async (req, res) => {
     try {
       const blog = await Blogs.findOne({
         where: {name: "blogs"},
-        order: [['createdAt', 'DESC']],
+        order: [['updatedAt', 'DESC']],
       });
       if (!blog) {
         return res.status(404).json({ success: false, message: "Blog not found." });
