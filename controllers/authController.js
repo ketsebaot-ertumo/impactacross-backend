@@ -184,7 +184,7 @@ const sendTokenResponse = async (user, statusCode, res) => {
         const token = await user.getJwtToken();
         const cookieOptions = {
             httpOnly: true,
-            secure: false, // Only in HTTPS
+            secure: true, // Only in HTTPS
             sameSite: 'Lax', 
             maxAge: 8 * 60 * 60 * 1000, // 8 hours
         };
