@@ -44,13 +44,6 @@ const corsOptions = {
 app.options('*', cors(corsOptions));
 app.use(cors(corsOptions));
 
-// // Handle preflight requests for any route
-// app.options('*', cors({
-//     origin: true, // allow all origins for OPTIONS
-//     credentials: true
-// }));
-
-
 app.get("/", (req, res) => {
     res.send("Welcome to `ImpactAcross Website Backend`!");
 });
