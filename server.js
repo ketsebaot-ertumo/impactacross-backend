@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({ limit: "25mb", extended: true }));
 app.use(cookieParser());
 
 // app.use(cors());
-const allowedOrigins = ['http://localhost:3000', 'http://192.168.0.128:3000/', 'https://fana.spa.com'];
+const allowedOrigins = ['http://localhost:3000', 'http://192.168.0.128:3000/', 'https://fana.spa.com',];
 const corsOptions = {
     origin: (origin, callback) => {
         if (!origin || allowedOrigins.includes(origin)) {
@@ -38,10 +38,18 @@ const corsOptions = {
     },
     credentials: true,  // Enable credentials (cookies, authorization headers, etc.)
     allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'], // Customize headers as needed
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     preflightContinue: false,  // Automatically send response for preflight request
 };
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
+
+// Handle preflight requests for any route
+app.options('*', cors({
+    origin: true, // allow all origins for OPTIONS
+    credentials: true
+}));
+
+// app.options('*', cors(corsOptions));
 
 app.get("/", (req, res) => {
     res.send("Welcome to `ImpactAcross Website Backend`!");
