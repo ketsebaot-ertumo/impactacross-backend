@@ -39,17 +39,17 @@ const corsOptions = {
     credentials: true,  // Enable credentials (cookies, authorization headers, etc.)
     allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'], // Customize headers as needed
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    preflightContinue: false,  // Automatically send response for preflight request
+    // preflightContinue: false,  // Automatically send response for preflight request
 };
+app.options('*', cors(corsOptions));
 app.use(cors(corsOptions));
 
-// Handle preflight requests for any route
-app.options('*', cors({
-    origin: true, // allow all origins for OPTIONS
-    credentials: true
-}));
+// // Handle preflight requests for any route
+// app.options('*', cors({
+//     origin: true, // allow all origins for OPTIONS
+//     credentials: true
+// }));
 
-// app.options('*', cors(corsOptions));
 
 app.get("/", (req, res) => {
     res.send("Welcome to `ImpactAcross Website Backend`!");
