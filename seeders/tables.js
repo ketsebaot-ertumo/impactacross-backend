@@ -16,7 +16,7 @@ const media = "https://youtu.be/iGQ6KfyH5Vs?si=CDGjhHu3py9_nrt8";
     const password = await generateHashedPassword();
     const userData = [{ 
         firstName: 'admin', lastName: 'admin', email: 'admin@gmail.com', password: password, phone: '+251919765445', 
-        isConfirmed: true, role: 'admin', createdAt: new Date(), updatedAt: new Date(), }
+        isConfirmed: true, role: 'super-admin', createdAt: new Date(), updatedAt: new Date(), }
     ];
     await Users.bulkCreate(userData);
 

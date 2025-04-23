@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({ limit: "25mb", extended: true }));
 app.use(cookieParser());
 
 // app.use(cors());
-const allowedOrigins = ['http://localhost:3000', 'http://192.168.0.128:3000/', 'https://fana.spa.com',];
+const allowedOrigins = ['http://localhost:3000', 'http://192.168.0.128:3000/', 'https://impactacross-dev.vercel.app',];
 const corsOptions = {
     origin: (origin, callback) => {
         if (!origin || allowedOrigins.includes(origin)) {
