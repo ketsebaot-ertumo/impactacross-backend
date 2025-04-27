@@ -1,4 +1,4 @@
-const { sequelize, Blogs } = require("../models");
+const { sequelize, Blogs, Users } = require("../models");
 const validator = require('validator');
 
 // Get all blogs with pagination
@@ -12,6 +12,9 @@ exports.getAllBlogs = async (req, res) => {
 
         const blogs = await Blogs.findAll({
             where: {name: "blogs"},
+            include: [
+                { model: Users, as: "user",  attributes: ["id", "firstName", "lastName", "email","phoneNumber", "role"], }
+            ],
             offset: (pageNumber - 1) * pageSize,
             limit: pageSize,
             order: [['updatedAt', 'DESC']],
@@ -35,6 +38,9 @@ exports.getAllBlogs = async (req, res) => {
 exports.getLatestBlog = async (req, res) => {
     try {
       const blog = await Blogs.findOne({
+        include: [
+            { model: Users, as: "user",  attributes: ["id", "firstName", "lastName", "email","phoneNumber", "role"], }
+        ],
         where: {name: "blogs"},
         order: [['updatedAt', 'DESC']],
       });
@@ -58,6 +64,9 @@ exports.getBlogById = async (req, res) => {
     try {
       const blog = await Blogs.findByPk(id,{
         where: {name: "blogs"},
+        include: [
+            { model: Users, as: "user",  attributes: ["id", "firstName", "lastName", "email","phoneNumber", "role"], }
+        ],
       });
       if (!blog) {
         return res.status(404).json({ success: false, message: "Blog not found." });
@@ -84,6 +93,9 @@ exports.getBlogsForUser = async (req, res) => {
 
         const blogs = await Blogs.findAll({
             where: { userId, name: "blogs"},
+            include: [
+                { model: Users, as: "user",  attributes: ["id", "firstName", "lastName", "email","phoneNumber", "role"], }
+            ],
             offset: (pageNumber - 1) * pageSize,
             limit: pageSize,
             order: [['createdAt', 'ASC']], 
