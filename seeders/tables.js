@@ -14,9 +14,19 @@ const media = "https://youtu.be/iGQ6KfyH5Vs?si=CDGjhHu3py9_nrt8";
       return await bcryptjs.hash('Admin123.', 10);
     };
     const password = await generateHashedPassword();
-    const userData = [{ 
+    const userData = [
+      { 
+        firstName: 'super', lastName: 'admin', email: 'superadmin@gmail.com', password: password, phone: '+251919765445', 
+        isConfirmed: true, role: 'super-admin', createdAt: new Date(), updatedAt: new Date(), 
+      },
+      { 
+        firstName: 'user', lastName: 'user', email: 'user@gmail.com', password: password, phone: '+251919765445', 
+        isConfirmed: true, role: 'user', createdAt: new Date(), updatedAt: new Date(), 
+      },
+      { 
         firstName: 'admin', lastName: 'admin', email: 'admin@gmail.com', password: password, phone: '+251919765445', 
-        isConfirmed: true, role: 'super-admin', createdAt: new Date(), updatedAt: new Date(), }
+        isConfirmed: true, role: 'admin', createdAt: new Date(), updatedAt: new Date(), 
+      },
     ];
     await Users.bulkCreate(userData);
 

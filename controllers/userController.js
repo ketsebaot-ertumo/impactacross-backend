@@ -9,7 +9,7 @@ const capitalizeName = (name) => {
 
 // create a new user
 exports.createUser = async (req, res) => {
-    const { firstName, lastName, email, password, role } = req.body;
+    const { firstName, lastName, email, password, phoneNumber } = req.body;
     const t = await sequelize.transaction();
     try {
         if (!firstName || !lastName || !email || !password) {
@@ -26,25 +26,26 @@ exports.createUser = async (req, res) => {
         const formattedFirstName = capitalizeName(firstName);
         const formattedLastName = capitalizeName(lastName);
         const newUser = await Users.create(
-            { firstName: formattedFirstName, lastName: formattedLastName, email, password, role: role || 'User', isConfirmed: true, userType: 'User'},  { transaction: t }
+            { firstName: formattedFirstName, lastName: formattedLastName, email, password, phoneNumber, isConfirmed: true},  { transaction: t }
         );
         await t.commit();
         return res.status(201).json({ success: true, message: 'User created successfully.', data: newUser });
     } catch (error) {
         await t.rollback();
         console.error('Error creating user:', error);
-        return res.status(500).json({ success: false, message: 'Internal Server Error.' });
+        return res.status(500).json({ success: false, message: 'Internal Server Error.', error: error.message });
     }
 };
 
 //show a user
 exports.show = async (req, res) => {
     try{
-        const id = req.params.id || req.user.id;
-        if (!id || !validator.isUUID(id)) {
-          return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
+        const id = req.params?.id || req.user?.id;
+        if (!id) {
+            return res.status(400).json({ success: false, message: 'Please provide a user Id.' });
         }
-        const user = await Users.findByPk(id);
+        const user = await Users.findByPk(id, {
+        });
         return res.status(200).json({success: true, data: user});
     }catch(error){
         console.error(error);
@@ -62,11 +63,11 @@ exports.getAll = async (req, res, next) => {
     const userCount = await Users.count();
     const totalPages = Math.ceil(userCount / pageSize);
     const users = await Users.findAll({
-      // where: {role: 'admin'},
+      where: { role: {[Op.ne]: 'super-admin'}},
       offset: (pageNumber - 1) * pageSize,
       limit: pageSize,
-      order: [['createdAt', 'ASC']], 
-    }); // Sorting by createdAt in ascending order
+      order: [['updatedAt', 'DESC']], 
+    });
     return res.status(200).json({ 
       success: true, 
       data: users,
@@ -83,8 +84,8 @@ exports.getAll = async (req, res, next) => {
 exports.update = async (req, res, next) => {
   const { ...updates } = req.body;
   const id = req.params.id || req.user.id;
-  if (!id || !validator.isUUID(id)) {
-      return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
+  if (!id) {
+      return res.status(400).json({ message: 'Please provide a user Id.' });
   }
   const t = await sequelize.transaction();
   try {
@@ -93,6 +94,21 @@ exports.update = async (req, res, next) => {
       await t.rollback();
       return res.status(404).json({ success: false, message: 'User not found.' });
     }
+    if (user.role === 'super-admin') {
+      await t.rollback();
+      return res.status(400).json({ success: false, message: 'Can not delete the super admin user.' });
+    }
+
+    // Compare existing data with the new data
+    const isChanged = Object.keys(updates).some(
+      key => user[key] !== updates[key]
+    );
+
+    if (!isChanged) {
+      await transaction.rollback();
+      return res.status(304).json({ success: false, message: `No changes detected for user with id '${id}'.` });
+    }
+
     const [updatedCount, [updatedUser]] = await Users.update(updates, { where: { id }, returning: true, transaction: t,});
     if (updatedCount === 0) {
       await t.rollback();
@@ -113,18 +129,21 @@ exports.deleteUser = async (req, res) => {
   const t = await sequelize.transaction();
   try {
     const id = req.params.id || req.user.id;
-    if (!id || !validator.isUUID(id)) {
-      return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
-    }
-    if (req?.user?.role === 'admin') {
-      return res.status(400).json({ success: false, message: 'Can not deleted the user with "admin" role.' });
+    if (!id) {
+        return res.status(400).json({ success: false, message: 'Please provide a user Id.' });
     }
     const user = await Users.findByPk(id, { transaction: t, lock: t.LOCK.UPDATE });
     if (!user) {
       await t.rollback();
       return res.status(404).json({ success: false, message: 'User not found or was deleted before.' });
     }
+    if (user.role === 'super-admin') {
+      await t.rollback();
+      return res.status(400).json({ success: false, message: 'Can not delete the super admin user.' });
+    }
+
     await user.destroy({ transaction: t });
+
     if (req.user?.id && id === req.user.id) {
       res.clearCookie('token');
     }
