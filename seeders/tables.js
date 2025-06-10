@@ -174,7 +174,7 @@ const media = "https://youtu.be/iGQ6KfyH5Vs?si=CDGjhHu3py9_nrt8";
         durationHours: 40,
         imageURL: image,
         certification: true,
-        status: "Published",
+        status: "Completed",
       },
       {
         userId: existingUser.id,
@@ -188,7 +188,7 @@ const media = "https://youtu.be/iGQ6KfyH5Vs?si=CDGjhHu3py9_nrt8";
         durationHours: 20,
         imageURL: image,
         certification: false,
-        status: "Published",
+        status: "Completed",
       },
       {
         userId: existingUser.id,

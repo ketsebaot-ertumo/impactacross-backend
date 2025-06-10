@@ -38,9 +38,6 @@ exports.getAllBlogs = async (req, res) => {
 exports.getLatestBlog = async (req, res) => {
     try {
       const blog = await Blogs.findOne({
-        // include: [
-        //     { model: Users, as: "user",  attributes: ["id", "firstName", "lastName", "email","phoneNumber", "role"], }
-        // ],
         where: {name: "blogs"},
         order: [['updatedAt', 'DESC']],
       });
