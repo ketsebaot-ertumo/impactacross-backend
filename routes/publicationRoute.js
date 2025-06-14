@@ -8,7 +8,7 @@ router.post('/',isAuthenticated, publicationController.createPost)
 router.get('/', publicationController.getAllPost);
 router.get('/latest', publicationController.getLatestPublicationPost);
 router.get('/:id', publicationController.getPublicationPostById);
-router.get('/user/:id', publicationController.getPostForUser);
+router.get('/user', publicationController.getPostForUser);
 router.put('/:id',isAuthenticated, publicationController.updatePublicationPost);
 router.delete('/:id',isAuthenticated, publicationController.deletePublicationPost)
 

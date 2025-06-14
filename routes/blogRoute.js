@@ -7,7 +7,7 @@ router.post('/',isAuthenticated, createBlog)
 router.get('/', getAllBlogs);
 router.get('/latest', getLatestBlog);
 router.get('/:id', getBlogById);
-router.get('/user/:id', getBlogsForUser);
+router.get('/user', getBlogsForUser);
 router.put('/:id',isAuthenticated, updateBlog);
 router.delete('/:id',isAuthenticated, deleteBlog)
 

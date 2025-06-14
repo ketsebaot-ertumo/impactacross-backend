@@ -1,6 +1,5 @@
 'use strict';
 
-const pg = require('pg');
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
@@ -11,34 +10,10 @@ const config = require(__dirname + '/../config/config.js')[env];
 const db = {};
 
 let sequelize;
-if (process.env.DATABASE_URL) {
-  sequelize = new Sequelize(process.env.DATABASE_URL, {
-    ...config, 
-    logging: false, // Disable logging globally for all queries
-    dialect: 'postgres',
-    protocol: 'postgres',
-    dialectModule: require('pg'),
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false, // Adjust based on your SSL configuration
-      },
-    },
-  });
+if (config.use_env_variable) {
+  sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
-  sequelize = new Sequelize(config.database, config.username, config.password, {
-    ...config, 
-    logging: false, // Disable logging globally for all queries
-    dialect: 'postgres',
-    protocol: 'postgres',
-    dialectModule: require('pg'),
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false, // Adjust based on your SSL configuration
-      },
-    },
-  });
+  sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
 fs

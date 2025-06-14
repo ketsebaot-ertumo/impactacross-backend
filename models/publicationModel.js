@@ -1,13 +1,15 @@
+const { getGeneratedId } = require('../utils/generateCustomId');
+
 module.exports = (sequelize, DataTypes) => {
     const Publication = sequelize.define("Publications", {
         id: {
-            type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV4,
+            type: DataTypes.STRING,
+            defaultValue: getGeneratedId,
             primaryKey: true,
+            allowNull: false,
         },
         userId: {
-            type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV4,
+            type: DataTypes.STRING,
             allowNull: false,
             references: {
                 model: 'Users',

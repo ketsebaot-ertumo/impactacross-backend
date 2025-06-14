@@ -1,18 +1,16 @@
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const ROLES = ['Super Admin', 'Admin', 'Customer', 'Content Manager'];
-const { v4: uuidv4 } = require('uuid');
-// const { PhoneNumberUtil, PhoneNumberFormat } = require('google-libphonenumber');
-// const phoneUtil = PhoneNumberUtil.getInstance();
+const { getGeneratedId } = require('../utils/generateCustomId');
 
 module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define('Users', {
         id: {
-            type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV4,
-            allowNull: false,
+            type: DataTypes.STRING,
+            defaultValue: getGeneratedId,
             primaryKey: true,
-        }, 
+            allowNull: false,
+        },
         firstName: {
             type: DataTypes.STRING,
             allowNull: false
@@ -56,10 +54,10 @@ module.exports = (sequelize, DataTypes) => {
             //     isIn: [ROLES],
             // },
         },    
-        confirmationCode: {
+        confirmation_code: {
             type: DataTypes.STRING,
             allowNull: false,
-            defaultValue: () => uuidv4().replace(/-/g, '').slice(0, 6),
+            defaultValue: () => Math.floor(100000 + Math.random() * 900000).toString(),
         },
         isConfirmed: {
             type: DataTypes.BOOLEAN,
@@ -82,22 +80,22 @@ module.exports = (sequelize, DataTypes) => {
     // Hash password before creating or updating the user
     const hashPassword = async (user) => {
         if (user.password) {
-        try {
-            const salt = await bcryptjs.genSalt(10);
-            user.password = await bcryptjs.hash(user.password, salt);
-        } catch (error) {
-            throw new Error('Error hashing password.');
-        }
+            try {
+                const salt = await bcryptjs.genSalt(10);
+                user.password = await bcryptjs.hash(user.password, salt);
+            } catch (error) {
+                throw new Error('Error hashing password.');
+            }
         }
     };
-    // Hash password before user is created
-    User.beforeCreate(hashPassword);
+
     // Hash password before user is updated (if password is changed)
     User.beforeSave(async (user) => {
         if (user.changed('password')) {
             await hashPassword(user);
         }
-    });     
+    });  
+
     // Compare entered password with stored password
     User.prototype.comparePassword = async function (enteredPassword) {
         return await bcryptjs.compare(enteredPassword, this.password);

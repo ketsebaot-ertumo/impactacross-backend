@@ -6,7 +6,7 @@ router.post("/", trainingController.createTraining);
 router.get("/", trainingController.getAllTrainingPosts);
 router.get("/latest", trainingController.getLatestTrainingPost);
 router.get("/:id", trainingController.getTrainingPostById);
-router.get("/user/:id", trainingController.getTrainingPostForUser);
+router.get("/user", trainingController.getTrainingPostForUser);
 router.put("/:id", trainingController.updateTraining);
 router.delete("/:id", trainingController.deleteTraining);
 

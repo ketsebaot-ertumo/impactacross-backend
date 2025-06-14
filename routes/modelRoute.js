@@ -1,0 +1,39 @@
+const express = require('express');
+const router = express.Router();
+const controllers = require('../controllers/modelController');
+const { 
+  Phone, Location, OwnerLink, 
+  Section, WhatWeDoImage, WhoWeAreContent, 
+  Service, Team, TeamLink, Project, Partner 
+} = require('../models/index');
+
+
+// Generic CRUD routes
+const bindCRUD = (path, Model, includes = [], fieldName = 'key') => {
+  router.post(`/${path}`, controllers.createModel(Model));
+  router.get(`/${path}`, controllers.getAllModels(Model, includes));
+  router.get(`/${path}/latest`, controllers.getLatestModel(Model, includes));
+  router.get(`/${path}/values/:value`, controllers.getModelByValue(Model, fieldName, includes));
+  router.get(`/${path}/:id`, controllers.getModelById(Model, includes));
+  router.put(`/${path}/id/:id`, controllers.updateModel(Model, includes));
+  router.delete(`/${path}/:id`, controllers.deleteModel(Model));
+};
+
+// Phones, Locations, Links
+bindCRUD('phones', Phone);
+bindCRUD('locations', Location);
+bindCRUD('owner-links', OwnerLink);
+
+// Sections
+bindCRUD('sections', Section, [{ model: Team, as: 'teams' }, { model: Project, as: 'projects' }, { model: Service, as: 'services' }, { model: Partner, as: 'partners' }]);
+
+// Section-related content
+bindCRUD('what-we-do-images', WhatWeDoImage, [{ model: Section, as: 'section' }]);
+bindCRUD('who-we-are-contents', WhoWeAreContent);
+bindCRUD('services', Service, [{ model: Section, as: 'section' }]);
+bindCRUD('teams', Team, [{ model: Section, as: 'section' }]);
+bindCRUD('team-links', TeamLink);
+bindCRUD('projects', Project);
+bindCRUD('partners', Partner);
+
+module.exports = router;
