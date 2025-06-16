@@ -7,6 +7,7 @@ const ownerController = require('../controllers/ownerController');
 router.post('/', ownerController.createOwner);
 router.get('/', ownerController.getAllOwners);
 router.get('/latest', ownerController.getOwner);
+router.get('/:id', ownerController.getOwnerById);
 router.put('/:id', ownerController.updateOwner);
 router.delete('/:id', ownerController.deleteOwner);
 

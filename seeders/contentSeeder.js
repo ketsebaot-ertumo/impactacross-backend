@@ -4,14 +4,16 @@ const image_url = "https://res.cloudinary.com/dq6mvqivd/image/upload/v1749649722
 module.exports = async (sectionMap) => {
 
   await WhoWeAreContent.create({
-    description1 : 'Abbabor Development Consult (ADC) is an Ethiopia-based consulting firm dedicated to providing research solutions that empower governments and development organizations in achieving social and economic progress.', 
-    description2 : "Our expertise lies in designing, monitoring, and evaluating strategies aligned with local and global development objectives. Through evidence-based policy and rigorous research, we strive to create meaningful impact and sustainable solutions for Africa's future.", 
-    image_url: "https://res.cloudinary.com/dq6mvqivd/image/upload/v1749649671/ImpactAcross/owner/whoWeAre_d3qftv.png",
+    description1 : 'ImpactAcross Development Research and Consultancy PLC is an Ethiopia-based firm (with a liaison office in Cape Town, South Africa) committed to helping governments, donors, and development organizations drive sustainable progress across Africa.', 
+    description2 : "At ImpactAcross, our name reflects our mission—to generate meaningful, data-driven change across sectors, stakeholders, and geographies. We deliver evidence-based insights, strategic solutions, and expert guidance to address today’s most pressing development challenges.", 
+    image_url: "https://res.cloudinary.com/dq6mvqivd/image/upload/v1750087594/ImpactAcross/images/photo_5944760772829759238_x_s1jd7a.jpg",
   });
 
   await WhatWeDoImage.bulkCreate([
-    { section_id : sectionMap["what_we_do"], title: "Analysis", description: "We conduct rigorous research and assessments to generate evidence that illuminates the interconnected challenges across sectors like health, environment, climate change, and development.", image_url },
-    { section_id : sectionMap["what_we_do"], title: "Strategy", description: "Our strategies are crafted to be forward-thinking, innovative, and actionable, ensuring they are adaptable to changing needs while driving long-term impact.", image_url },
-    { section_id : sectionMap["what_we_do"], title: "Action", description: "We translate strategies into impactful, on-the-ground initiatives, ensuring communities and institutions are empowered to drive sustainable, lasting change.", image_url },
+    { section_id : sectionMap["what_we_do"], title: "Cross-Sectoral Impact", description: "We conduct technical studies and feasibility assessments that inform transformative solutions across climate change, natural resource management, forestry, livelihoods, energy, and agriculture.", image_url },
+    { section_id : sectionMap["what_we_do"], title: "Multi-Stakeholder Engagement", description: "We build capacity through training, advisory, and implementation support for governments, donors, private sector actors, NGOs, and communities—promoting inclusive, collaborative action.", image_url },
+    { section_id : sectionMap["what_we_do"], title: "Geographical Reach", description: "Our consultancy services span multiple regions and countries, with localized strategies that are responsive, scalable, and sustainable.", image_url },
+    { section_id : sectionMap["what_we_do"], title: "Holistic Solutions", description: "We integrate policy analysis, technological insights, and practical implementation to develop strategies that bridge research with real-world action.", image_url },
+    { section_id : sectionMap["what_we_do"], title: "End-to-End Services", description: "From early-stage feasibility and strategic planning to implementation support and impact assessments, we offer comprehensive services throughout the project lifecycle.", image_url },
   ]);
 };

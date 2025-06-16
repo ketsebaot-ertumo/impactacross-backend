@@ -33,6 +33,33 @@ exports.getOwner = async (req, res) => {
 };
 
 
+// Get owner by id
+exports.getOwnerById = async (req, res) => {
+  const { id } = req.params;
+  if(!id){
+    res.status(400).json({success: false, message: 'Missing required field.'})
+  }
+  try {
+    const owner = await Owner.findByPk(id, {
+      include:[
+        { model: OwnerLink, as: "links" },
+        { model: Phone, as: "phones" },
+        { model: Location, as: "locations" },
+      ],
+      order: [['createdAt', 'DESC']],
+    });
+
+    if (!owner) {
+      return res.status(404).json({success: false, message: 'No owner found' });
+    }
+
+    res.status(200).json({success: true,  data: owner });
+  } catch (error) {
+    res.status(500).json({ success:false, error: error.message });
+  }
+};
+
+
 // Get all owners with pagination
 exports.getAllOwners = async (req, res) => {
   const { page = 1, limit = 10 } = req.query;

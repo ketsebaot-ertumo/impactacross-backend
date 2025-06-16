@@ -14,7 +14,7 @@ router.use("/owners", require("./owner_route"));
 // router.use("/owner/links", require("./owner_route"));
 
 // owner
-router.use("/admin", require("./modelRoute"));
+router.use("/", require("./modelRoute"));
 
 
 module.exports = router;

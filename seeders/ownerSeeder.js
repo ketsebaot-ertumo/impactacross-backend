@@ -5,7 +5,7 @@ module.exports = async () => {
     name: "ImpactAcross",
     email: 'info@impactacross.com',
     title: "Development Research and Consultancy PLC",
-    logo_url: "https://res.cloudinary.com/dq6mvqivd/image/upload/v1749714702/ImpactAcross/owner/logo1_ekrjmf.png",
+    logo_url: "https://res.cloudinary.com/dq6mvqivd/image/upload/v1750098307/ImpactAcross/owner/WhatsApp_Image_2025-06-16_at_6.20.52_PM-removebg-preview_rrgeex.png",
     primary_color: '#007A33',
     font_family: "Avenir",
     font_url: null

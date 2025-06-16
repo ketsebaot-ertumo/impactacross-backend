@@ -64,7 +64,7 @@ exports.getAll = async (req, res, next) => {
     const userCount = await Users.count();
     const totalPages = Math.ceil(userCount / pageSize);
     const users = await Users.findAll({
-      where: { role: {[Op.ne]: 'super-admin'}},
+      where: { role: {[Op.ne]: 'supe_admin'}},
       offset: (pageNumber - 1) * pageSize,
       limit: pageSize,
       order: [['updatedAt', 'DESC']], 
@@ -95,7 +95,7 @@ exports.update = async (req, res, next) => {
       await t.rollback();
       return res.status(404).json({ success: false, message: 'User not found.' });
     }
-    if (user.role === 'super-admin') {
+    if (user.role === 'supe_admin') {
       await t.rollback();
       return res.status(400).json({ success: false, message: 'Can not delete the super admin user.' });
     }
@@ -138,7 +138,7 @@ exports.deleteUser = async (req, res) => {
       await t.rollback();
       return res.status(404).json({ success: false, message: 'User not found or was deleted before.' });
     }
-    if (user.role === 'super-admin') {
+    if (user.role === 'supe_admin') {
       await t.rollback();
       return res.status(400).json({ success: false, message: 'Can not delete the super admin user.' });
     }

@@ -55,7 +55,7 @@ exports.getLatestBlog = async (req, res) => {
 // Get a blog by ID
 exports.getBlogById = async (req, res) => {
     const { id } = req.params;
-    if (!id || !validator.isUUID(id)) {
+    if (!id) {
       return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
     }
     try {
@@ -141,7 +141,7 @@ exports.createBlog = async (req, res) => {
 exports.updateBlog = async (req, res) => {
     const { ...updates } = req.body;
     const id = req.params.id;
-    if (!id || !validator.isUUID(id)) {
+    if (!id ) {
         return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
     }
     const t = await sequelize.transaction();
@@ -169,7 +169,7 @@ exports.updateBlog = async (req, res) => {
 // Delete a blog post with transaction support
 exports.deleteBlog = async (req, res) => {
     const id = req.params.id;
-    if (!id || !validator.isUUID(id)) {
+    if (!id ) {
         return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
     }
     const t = await sequelize.transaction();

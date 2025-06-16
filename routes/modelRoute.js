@@ -22,7 +22,7 @@ const bindCRUD = (path, Model, includes = [], fieldName = 'key') => {
 // Phones, Locations, Links
 bindCRUD('phones', Phone);
 bindCRUD('locations', Location);
-bindCRUD('owner-links', OwnerLink);
+bindCRUD('links', OwnerLink);
 
 // Sections
 bindCRUD('sections', Section, [{ model: Team, as: 'teams' }, { model: Project, as: 'projects' }, { model: Service, as: 'services' }, { model: Partner, as: 'partners' }]);
@@ -37,8 +37,8 @@ bindCRUD('projects', Project);
 bindCRUD('partners', Partner);
 
 // owner
-bindCRUD('owner/links', OwnerLink);
-bindCRUD('owner/locations', Location);
-bindCRUD('owner/phones', Phone);
+bindCRUD('links', OwnerLink);
+bindCRUD('locations', Location);
+bindCRUD('phones', Phone);
 
 module.exports = router;

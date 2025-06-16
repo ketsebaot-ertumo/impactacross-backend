@@ -1,41 +1,34 @@
 const { Service } = require("../models/index");
-const image_url = "https://res.cloudinary.com/dq6mvqivd/image/upload/v1749803292/ImpactAcross/owner/test_g250va.jpg"
+const image_url = "https://res.cloudinary.com/dq6mvqivd/image/upload/v1750097496/ImpactAcross/images/photo_5944760772829759997_x_f4pshd.jpg"
 
 module.exports = async (sectionMap) => {
   await Service.bulkCreate([
     {
       section_id: sectionMap["service"],
-      title: "Surveys & statistical analysis",
-      content: "Members of our statistical teams are also members of the relevant internationally recognised statistical and actuarial associations. We conduct relevant statistical tests and analysis to ensure the most useful and appropriate insights are captured. We present our findings in ways that engage a broad variety of readers including those who are more and less comfortable with statistics.",
-      slug: "survey-statistical-analysis",
+      title: "Research & Policy Analysis",
+      content: "We deliver rigorous, high-quality studies that generate actionable insights to inform policy and support evidence-based decision-making. Our expertise spans impact evaluations, baseline and endline surveys, political economy and policy analysis, as well as thematic research on climate change, livelihoods, and governance.",
+      slug: "research-policy-analysis",
       image_url,
     },
     {
       section_id: sectionMap["service"],
-      title: "Programme Monitoring & Evaluation",
-      content: "The growing demands for Monitoring and Evaluation in Africa are driven by civil society organisations and decision-makers in the region increasingly wanting to use evidence.",
-      slug: "programme-monitoring-evaluation",
+      title: "Program Design & Strategy Development",
+      content: "We support the design of impactful and scalable programs rooted in local realities and aligned with global frameworks. Our services include conducting feasibility studies and investment cases, developing Theories of Change and results frameworks, and crafting compelling proposals and technical reports.",
+      slug: "programme-design-strategy-development",
       image_url,
     },
     {
       section_id: sectionMap["service"],
-      title: "Strategy & Programme Planning ",
-      content: "The emphasis on achieving development outcomes means that development strategies need to be clearly articulated.",
-      slug: "strategy-programme-planning",
+      title: "Monitoring, Evaluation & Learning (MEL)",
+      content: "We build robust Monitoring, Evaluation, and Learning (MEL) systems that enhance accountability, foster continuous learning, and support adaptive project management. Our work includes designing MEL frameworks and tools, conducting performance monitoring and data analysis, and managing learning processes and reporting to inform decision-making.",
+      slug: "monitoring-evaluation-learning",
       image_url,
     },
     {
       section_id: sectionMap["service"],
-      title: "Training & Capacity Building",
-      content: "ADC offers training solutions and interventions that are designed to achieve positive impact and result.",
-      slug: "training-capacity-building",
-      image_url,
-    },
-    {
-      section_id: sectionMap["service"],
-      title: "Ethnographic & Qualitative Research",
-      content: "An ethnographer observes, records and shares synthesised information. Questions are posed and answered.",
-      slug: "ethnographic-qualitative-research",
+      title: "Capacity Building & Technical Assistance",
+      content: "We empower organizations and communities through tailored training, mentorship, and advisory support. Our services include capacity building in climate finance, monitoring and evaluation (M&E), and project management; strengthening organizational systems and structures; and facilitating effective stakeholder engagement for inclusive and sustainable impact.",
+      slug: "capacity-building-technical-assistance",
       image_url,
     },
   ]);
