@@ -36,4 +36,9 @@ bindCRUD('team-links', TeamLink);
 bindCRUD('projects', Project);
 bindCRUD('partners', Partner);
 
+// owner
+bindCRUD('owner/links', OwnerLink);
+bindCRUD('owner/locations', Location);
+bindCRUD('owner/phones', Phone);
+
 module.exports = router;

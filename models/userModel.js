@@ -49,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
         role: {
             type: DataTypes.STRING,
             allowNull: false,
-            defaultValue: 'Customer',
+            defaultValue: 'admin',
             // validate: {
             //     isIn: [ROLES],
             // },
@@ -75,6 +75,9 @@ module.exports = (sequelize, DataTypes) => {
         },
     },{
         timestamps: true,
+        defaultScope: {
+            attributes: { exclude: ['password', 'resetCode', 'confirmation_code', 'userType'] }
+        }, 
     });
 
     // Hash password before creating or updating the user
@@ -100,6 +103,7 @@ module.exports = (sequelize, DataTypes) => {
     User.prototype.comparePassword = async function (enteredPassword) {
         return await bcryptjs.compare(enteredPassword, this.password);
     };
+
     // Generate JWT token
     User.prototype.getJwtToken = function () {
         return jwt.sign(
@@ -108,6 +112,13 @@ module.exports = (sequelize, DataTypes) => {
             { expiresIn: '6h' }
         );
     };
+
+    User.prototype.getResetPasswordToken = function () {
+        return jwt.sign(
+            { id: this.id, role_id: this.role_id }, process.env.JWT_SECRET, { expiresIn: '1h' }
+        );
+    };
+
     User.associate = models => {
         User.hasMany(models.Blogs, { foreignKey: "authorId", as: "blog" });
     };

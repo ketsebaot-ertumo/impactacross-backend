@@ -45,6 +45,7 @@ exports.show = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Please provide a user Id.' });
         }
         const user = await Users.findByPk(id, {
+          attributes: { exclude: ['password', 'confirmation_code', 'resetCode'] }
         });
         return res.status(200).json({success: true, data: user});
     }catch(error){

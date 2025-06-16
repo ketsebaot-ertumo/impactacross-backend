@@ -11,6 +11,7 @@ router.use("/users", require("./userRoute"));
 
 // owner
 router.use("/owners", require("./owner_route"));
+// router.use("/owner/links", require("./owner_route"));
 
 // owner
 router.use("/admin", require("./modelRoute"));

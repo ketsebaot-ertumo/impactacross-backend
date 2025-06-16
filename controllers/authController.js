@@ -1,6 +1,5 @@
 const { Op } = require('sequelize');
 const moment = require('moment');
-const bcryptjs = require('bcryptjs');
 const { sendPasswordResetEmail, sendConfirmationEmail } = require('../utils/sendEmail');
 const { generateCode } = require('../utils/generateCode');
 const { sequelize, Users } = require('../models/index');
@@ -56,6 +55,7 @@ exports.confirm = async (req, res) => {
     const t = await sequelize.transaction();
     const existingUser = await Users.findOne({ 
       where: { confirmationCode, email: { [Op.iLike]: email }, isConfirmed: false },
+      attributes: { include: ['confirmation_code'] },
       lock: t.LOCK.UPDATE,
       transaction: t
     });
@@ -79,7 +79,7 @@ exports.signin = async (req, res) => {
     if (!email || !password) {
       return res.status(400).json({ success: false, message: "Please provide the required fields." });
     }
-    const existingUser = await Users.findOne({ where: { email: { [Op.iLike]: email } } });
+    const existingUser = await Users.findOne({ where: { email: { [Op.iLike]: email } }, attributes: { include: ['password',] }, });
     if (!existingUser) {
         return res.status(404).json({ success: false, message: 'No account found with the provided email address.',});
     }
@@ -118,9 +118,16 @@ exports.forgot = async (req, res) => {
   }
   const t = await sequelize.transaction();
   try {
+    const user = await Users.findOne({ where: { email: { [Op.iLike]: email } }, transaction: t });
+  
+    if (!user) {
+      await t.rollback();
+      return res.status(404).json({ success: false, message: "No account found with this email." });
+    }
+
     // Generate a unique reset code
     const resetCode = generateCode();
-    const [updated] = await Users.update(
+    const [updated] = await user.update(
       { resetCode },
       { where: { email: { [Op.iLike]: email } }, transaction: t }
     );
@@ -153,6 +160,7 @@ exports.reset = async (req, res) => {
     // Find the user with the reset code
     const existingUser = await Users.findOne({
       where: { email: { [Op.iLike]: email }, resetCode },
+      attributes: { include: ['password', 'resetCode'] },
       lock: t.LOCK.UPDATE, // Ensures that no other transaction can modify this row
       transaction: t
     });
@@ -166,9 +174,10 @@ exports.reset = async (req, res) => {
       return res.status(410).json({ success: false, message: "Reset code expired. Please request a new one." });
     }
     // Hash the new password
-    existingUser.password = await bcryptjs.hash(password, 10);
+    existingUser.password = password;
     existingUser.resetCode = null;
     await existingUser.save({ transaction });
+
     await transaction.commit();
     return res.status(200).json({ success: true, message: "Password reset successfully. You may now log in." });
   } catch (error) {
@@ -186,19 +195,25 @@ const sendTokenResponse = async (user, statusCode, res) => {
             httpOnly: true,
             // secure: true, // Only in HTTPS
             // sameSite: 'None', 
-            secure: false, // only for local dev!
-            sameSite: 'Lax', // or 'None' if secure is true
+            secure: false,
+            sameSite: 'strict',
             maxAge: 8 * 60 * 60 * 1000, // 8 hours
         };
         return res.status(statusCode)
             .cookie('token', token, cookieOptions)
             .json({
                 success: true,
-                data: {
+                // data: {}
+                token,
+                user: {
                   id: user.id,
+                  firstName: user.firstName,
+                  lastName: user.lastName,
+                  email: user.email,
+                  phoneNumber: user.phoneNumber,
                   role: user.role,
-                  token,
-                }
+                  isConfirmed: user.isConfirmed,
+                },
             });
     } catch (error) {
       console.error('Error generating token:', error);
