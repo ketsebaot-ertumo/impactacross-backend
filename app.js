@@ -19,7 +19,7 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-const allowedOrigins = ["http://localhost:3000","https://impactacross.com"];
+const allowedOrigins = ["http://localhost:3000","https://impactacross.com", "https://76.76.21.21"];
 const corsOptions = {
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
