@@ -2,7 +2,7 @@ const { Section } = require("../models/index");
 
 module.exports = async () => {
   const sections = await Section.bulkCreate([
-    { key: "home", title: "", description: 'Informing Action. Inspiring Change. Impacting Futures.', isActive: true },
+    { key: "home", title: "Home", description: 'Informing Action. Inspiring Change. Impacting Futures.', isActive: true },
     { key: "what_we_do", title: "What We Do", description: 'We focus on practical, actionable solutions that go beyond reports—our work helps inform policy, unlock funding, and improve lives.', isActive: true },
     { key: "why_choose_us", title: "Why Choose Us", description: 'We deliver practical, action-oriented solutions that drive policy change, unlock funding, and improve lives. Centered on client collaboration, we listen, adapt, and tailor our work to your unique priorities and context. Combining deep regional insight with global standards, we bridge local relevance and international rigor. We build lasting partnerships grounded in transparency and commitment, empowering your teams with lasting capacity for future challenges.', isActive: true },
     { key: "service", title: "Our Services", description: 'At ImpactAcross, we provide end-to-end research, strategy, and advisory services tailored to accelerate sustainable development across Africa.', isActive: true },
