@@ -52,7 +52,7 @@ exports.getLatestPublicationPost = async (req, res) => {
 // Get a post by ID
 exports.getPublicationPostById = async (req, res) => {
     const id = req.params.id;
-    if (!id || !validator.isUUID(id)) {
+    if (!id) {
       return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
     }
     try {
@@ -132,7 +132,7 @@ exports.createPost = async (req, res) => {
 exports.updatePublicationPost = async (req, res) => {
     const { ...updates } = req.body;
     const id = req.params.id;
-    if (!id || !validator.isUUID(id)) {
+    if (!id) {
         return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
     }
     const t = await sequelize.transaction();
@@ -160,7 +160,7 @@ exports.updatePublicationPost = async (req, res) => {
 // Delete a post with transaction support
 exports.deletePublicationPost = async (req, res) => {
     const id = req.params.id;
-    if (!id || !validator.isUUID(id)) {
+    if (!id) {
         return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
     }
     const t = await sequelize.transaction();

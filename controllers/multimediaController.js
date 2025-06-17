@@ -68,7 +68,7 @@ exports.getLatestMultimediaPost = async (req, res) => {
 exports.getMultimediaPostById = async (req, res) => {
     console.log("\n\nid:\n\n")
     const { id } = req.params;
-    if (!id || !validator.isUUID(id)) {
+    if (!id) {
       return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
     }
     try {
@@ -120,7 +120,7 @@ exports.getMultimediaPostForUser = async (req, res) => {
 exports.updateMultimedia = async (req, res) => {
   try {
     const id = req.params.id;
-    if (!id || !validator.isUUID(id)) {
+    if (!id) {
       return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
     }
     const updated = await Multimedias.update(req.body, {
@@ -142,7 +142,7 @@ exports.updateMultimedia = async (req, res) => {
 exports.deleteMultimedia = async (req, res) => {
   try {
     const id = req.params.id;
-    if (!id || !validator.isUUID(id)) {
+    if (!id) {
       return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
     }
     const deleted = await Multimedias.destroy({ where: { id } });

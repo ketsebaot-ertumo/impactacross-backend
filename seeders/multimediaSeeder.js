@@ -1,5 +1,5 @@
 const { Multimedias } = require('../models/index');
-const image = "https://res.cloudinary.com/dq6mvqivd/image/upload/v1687943665/ffhpji16uejnyhkht5v9.jpg";
+const image = "https://res.cloudinary.com/dq6mvqivd/image/upload/v1750097294/ImpactAcross/images/photo_5944760772829759996_x_omvwji.jpg";
 
 const seedMultimedias = async (userId) => {
   await Multimedias.sync({ force: true });

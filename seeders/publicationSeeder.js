@@ -1,5 +1,5 @@
 const { Publications } = require('../models/index');
-const image = "https://res.cloudinary.com/dq6mvqivd/image/upload/v1687943665/ffhpji16uejnyhkht5v9.jpg";
+const image = "https://res.cloudinary.com/dq6mvqivd/image/upload/v1750152643/ImpactAcross/images/photo_5947012572643444119_x_1_qzjcwq.jpg";
 const file = `https://drive.google.com/uc?export=download&id=1SKy_npi510qn4zAIVz1FeNgtYNDXMoIO`;
 
 const seedPublications = async (userId) => {

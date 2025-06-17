@@ -53,7 +53,7 @@ exports.getAllTrainingPosts = async (req, res) => {
 // Get a post by ID
 exports.getTrainingPostById = async (req, res) => {
     const { id } = req.params;
-    if (!id || !validator.isUUID(id)) {
+    if (!id) {
       return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
     }
     try {
@@ -124,7 +124,7 @@ exports.getLatestTrainingPost = async (req, res) => {
 exports.updateTraining = async (req, res) => {
   try {
     const id = req.params.id;
-    if (!id || !validator.isUUID(id)) {
+    if (!id) {
       return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
     }
     const training = await Trainings.findByPk(id, { where: {name: "trainings"},});
@@ -143,7 +143,7 @@ exports.updateTraining = async (req, res) => {
 exports.deleteTraining = async (req, res) => {
   try {
     const id = req.params.id;
-    if (!id || !validator.isUUID(id)) {
+    if (!id) {
       return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
     }
     const training = await Trainings.findByPk(id, { where: {name: "trainings"},});

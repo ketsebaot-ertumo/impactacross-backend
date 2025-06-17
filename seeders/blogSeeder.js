@@ -1,5 +1,8 @@
 const { Blogs } = require('../models/index');
 const image = "https://res.cloudinary.com/dq6mvqivd/image/upload/v1687943665/ffhpji16uejnyhkht5v9.jpg";
+const image2 = "https://res.cloudinary.com/dq6mvqivd/image/upload/v1750097294/ImpactAcross/images/photo_5944760772829759996_x_omvwji.jpg";
+const image3 = "https://res.cloudinary.com/dq6mvqivd/image/upload/v1750152643/ImpactAcross/images/photo_5947012572643444119_x_1_qzjcwq.jpg";
+const image4 = "https://res.cloudinary.com/dq6mvqivd/image/upload/v1750152863/ImpactAcross/images/photo_5947012572643444120_x_ldxoed.jpg";
 
 const seedBlogs = async (userId) => {
   await Blogs.sync({ force: true });
