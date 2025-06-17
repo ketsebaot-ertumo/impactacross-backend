@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       name: DataTypes.STRING,
       logo_url: DataTypes.TEXT,
+      link: DataTypes.TEXT,
     },{
       timestamps: true,
     });
