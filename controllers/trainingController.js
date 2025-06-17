@@ -128,15 +128,15 @@ exports.updateTraining = async (req, res) => {
       return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
     }
     const training = await Trainings.findByPk(id, { where: {name: "trainings"},});
-    if (!training) return res.status(404).json({ message: 'Training not found' });
+    if (!training) return res.status(404).json({success: false, message: 'Training not found' });
 
     const updates = req.body;
     if (updates.title) updates.slug = slugify(updates.title, { lower: true, strict: true });
 
     await training.update(updates);
-    return res.status(200).json({ message: 'Training updated', training });
+    return res.status(200).json({success: true, message: 'Training updated', training });
   } catch (err) {
-    return res.status(500).json({ error: 'Failed to update training' });
+    return res.status(500).json({success: false, error: 'Failed to update training' });
   }
 };
 
@@ -147,11 +147,11 @@ exports.deleteTraining = async (req, res) => {
       return res.status(404).json({ success: false, message: "Missing an id or invalid format." });
     }
     const training = await Trainings.findByPk(id, { where: {name: "trainings"},});
-    if (!training) return res.status(404).json({ message: 'Training not found' });
+    if (!training) return res.status(404).json({success: false, message: 'Training not found' });
 
     await training.destroy();
-    return res.status(200).json({ message: 'Training deleted successfully' });
+    return res.status(200).json({success: true, message: 'Training deleted successfully' });
   } catch (err) {
-    return res.status(500).json({ error: 'Failed to delete training' });
+    return res.status(500).json({success: false, error: 'Failed to delete training' });
   }
 };
