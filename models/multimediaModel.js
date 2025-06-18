@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true,
         },
         mediaType: {
-            type: DataTypes.ENUM("Image", "Video", "Audio", "Document", "Other"),
+            type: DataTypes.ENUM("Image", "Video", "Audio", "Document", "Other", "Podcast"),
             allowNull: false,
             defaultValue: "Image",
         },
