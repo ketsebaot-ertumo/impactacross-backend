@@ -26,17 +26,18 @@ exports.signup = async (req, res, next) => {
       };
       const [newUser, created] = await Users.findOrCreate({
           where: { email: { [Op.iLike]: email } },
-          defaults: { firstName: capitalizeName(firstName), lastName: capitalizeName(lastName), email, phoneNumber, password, userType: 'Customer'},
+          defaults: { firstName: capitalizeName(firstName), lastName: capitalizeName(lastName), email, phoneNumber, password, isConfirmed: true},
           transaction: t
       });
       if (!created) {
           return res.status(400).json({ success: false, message: 'Email already in use.' });
       }
       // Send email inside transaction
-      const confirmationLink = `${process.env.CLIENT_URL}/confirm/${newUser.confirmationCode}`;
-      await sendConfirmationEmail(newUser.email, newUser.firstName, newUser.lastName, confirmationLink);
+      // const confirmationLink = `${process.env.CLIENT_URL}/confirm/${newUser.confirmationCode}`;
+      // await sendConfirmationEmail(newUser.email, newUser.firstName, newUser.lastName, confirmationLink);
       await t.commit();
-      return res.status(201).json({ success: true, message: 'Please check your email for confirmation code to verify your email.', user: newUser });
+      sendTokenResponse(newUser, 200, res);
+      // return res.status(201).json({ success: true, message: 'Please check your email for confirmation code to verify your email.', user: newUser });
   } catch (error) {
       await t.rollback();
       console.error('Error during signup:', error);
@@ -82,9 +83,6 @@ exports.signin = async (req, res) => {
     const existingUser = await Users.findOne({ where: { email: { [Op.iLike]: email } }, attributes: { include: ['password',] }, });
     if (!existingUser) {
         return res.status(404).json({ success: false, message: 'No account found with the provided email address.',});
-    }
-    if(existingUser.isConfirmed === false) {
-      return res.status(400).json({ success: false, message: "This email address has not yet been confirmed. Please check your inbox for the confirmation email." });
     }
     const isMatched = await existingUser.comparePassword(password);
     if (!isMatched) {
