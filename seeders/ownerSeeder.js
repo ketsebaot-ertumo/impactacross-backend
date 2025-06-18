@@ -7,14 +7,14 @@ module.exports = async () => {
     title: "Development Research and Consultancy PLC",
     logo_url: "https://res.cloudinary.com/dq6mvqivd/image/upload/v1750098307/ImpactAcross/owner/WhatsApp_Image_2025-06-16_at_6.20.52_PM-removebg-preview_rrgeex.png",
     primary_color: '#007A33',
-    font_family: "Avenir",
+    font_family: "Roboto",
     font_url: null
     // font_url: "https://yourcdn.com/fonts/Avenir.woff2",
   });
 
   await Phone.bulkCreate([
     { number: "+251911364755", owner_id: owner.id },
-    { number: "+251984811023", owner_id: owner.id },
+    { number: "+251944272121", owner_id: owner.id },
   ]);
 
   await Location.bulkCreate([

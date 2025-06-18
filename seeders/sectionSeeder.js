@@ -12,7 +12,7 @@ module.exports = async () => {
     { key: "partner", title: "Partners", description: 'At ImpactAcross, we believe sustainable impact comes from strong, collaborative partnerships that unite diverse expertise and perspectives. By working with global and local organizations, we co-create data-driven solutions that empower communities and drive lasting, inclusive development.', isActive: true },
     { key: "value", title: "Mission", description: 'ImpactAcross drives sustainable and equitable development in Africa through research, consulting, and capacity-building, partnering with stakeholders to shape impactful policies and programs.', isActive: true },
     { key: "value", title: "Vision", description: 'To be a leading African thought partner and catalyst for sustainable development, empowering communities and institutions through transformative research, strategic advice, and inclusive innovation.', isActive: true },
-    { key: "value", title: "Core Values", description: 'We uphold integrity, transparency, and respect, embracing diverse voices and community leadership. Grounded in evidence and collaboration, we deliver impactful, high-quality solutions with innovation and adaptability.', isActive: true },
+    { key: "value", title: "Core Values", description: 'We act with integrity, respect, and a drive for excellence, grounding our work in evidence, collaboration, and innovation.', isActive: true },
     { key: "contact", title: "Contact Us", description: '', isActive: true },
   ]);
 
