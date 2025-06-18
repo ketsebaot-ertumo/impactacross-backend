@@ -35,10 +35,10 @@ module.exports = (sequelize, DataTypes) => {
         phoneNumber: {
             type: DataTypes.STRING,
             allowNull: true,
-            defaultValue: "+251987654321",
-            validate: {
-              is: /^\+?[1-9]\d{1,14}$/ // E.164 format validation
-            }
+            // defaultValue: "+251987654321",
+            // validate: {
+            //   is: /^\+?[1-9]\d{1,14}$/ // E.164 format validation
+            // }
         },
         password: {
             type: DataTypes.STRING,
