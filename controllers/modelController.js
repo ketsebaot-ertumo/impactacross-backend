@@ -93,7 +93,11 @@ exports.createModel = (Model) => async (req, res) => {
       return res.status(200).json({
         success: true,
         data: data.rows,
-        pagination: { total: data.count, page: parseInt(page), pageSize: data.length, totalPages: Math.ceil(data.count / limit),},
+        pagination: { 
+          total: data.count, 
+          page: parseInt(page), 
+          pageSize: data.rows.length, 
+          totalPages: Math.ceil(data.count / limit),},
       });
     } catch (error) {
       console.log("Error occure while geting all data:", error)
