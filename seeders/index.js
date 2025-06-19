@@ -41,7 +41,7 @@ const {
     await require("./teamSeeder")(sectionMap);
     await require("./projectSeeder")(sectionMap);
     await require("./partnerSeeder")(sectionMap);
-    await require("./gallarySeeders")();
+    await require("./gallerySeeders")();
 
     console.log("✅ Seeding complete.");
   } catch (err) {

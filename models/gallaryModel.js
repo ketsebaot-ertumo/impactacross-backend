@@ -1,7 +1,7 @@
 const { getGeneratedId } = require('../utils/generateCustomId');
 
 module.exports = (sequelize, DataTypes) => {
-    const Gallary = sequelize.define('Gallary', {
+    const Gallery = sequelize.define('Gallery', {
       id: {
         type: DataTypes.STRING,
         defaultValue: getGeneratedId,
@@ -17,6 +17,6 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
     });
 
-    return Gallary;
+    return Gallery;
   };
   
