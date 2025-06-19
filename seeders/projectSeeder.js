@@ -8,6 +8,7 @@ module.exports = async (sectionMap) => {
       client: "Protestant Agency for Diakonia and Development (Bread for the World)",
       description: "A systematic review providing a comprehensive overview of food security, natural resources governance, and rural development in Ethiopia.",
       date: Date.now(),
+      status: "Completed"
     },
     {
       section_id: sectionMap["project"],
@@ -15,6 +16,7 @@ module.exports = async (sectionMap) => {
       client: "South African Institute of International Affairs (SAIIA)",
       description: "Policy insight exploring barriers to CSA practices and highlighting actions to promote them regionally.",
       date: Date.now(),
+      status: "Completed"
     },
     {
       section_id: sectionMap["project"],
@@ -22,6 +24,7 @@ module.exports = async (sectionMap) => {
       client: "SAIIA Occasional Paper",
       description: "Study exploring the Namibian environmental policy context and synergy between biotrade and ABS under the CBD and Nagoya Protocol.",
       date: Date.now(),
+      status: "Completed"
     },
   ]);
 };

@@ -1,7 +1,7 @@
 const { getGeneratedId } = require('../utils/generateCustomId');
 
 module.exports = (sequelize, DataTypes) => {
-    const WhoWeAreContent = sequelize.define('WhoWeAreContent', {
+    const AboutUs = sequelize.define('AboutUs', {
       id: {
         type: DataTypes.STRING,
         defaultValue: getGeneratedId,
@@ -10,15 +10,12 @@ module.exports = (sequelize, DataTypes) => {
       },
       description1: DataTypes.TEXT,
       description2: DataTypes.TEXT,
+      // description3: DataTypes.TEXT,
       image_url: DataTypes.STRING,
     },{
       timestamps: true,
     });
   
-    // WhoWeAreContent.associate = models => {
-    //   WhoWeAreContent.belongsTo(models.Section, { foreignKey: 'section_id' });
-    // };
-  
-    return WhoWeAreContent;
+    return AboutUs;
   };
   

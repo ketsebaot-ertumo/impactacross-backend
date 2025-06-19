@@ -21,7 +21,6 @@ module.exports = (sequelize, DataTypes) => {
   
     Section.associate = models => {
       Section.hasMany(models.WhatWeDoImage, { foreignKey: 'section_id', as: 'whatWeDoImages' });
-      Section.hasMany(models.WhoWeAreContent, { foreignKey: 'section_id', as: "whoWeAreContents" });
       Section.hasMany(models.Service, { foreignKey: 'section_id', as: 'services'  });
       Section.hasMany(models.Team, { foreignKey: 'section_id', as: 'teams'  });
       Section.hasMany(models.Project, { foreignKey: 'section_id', as: 'projects'  });

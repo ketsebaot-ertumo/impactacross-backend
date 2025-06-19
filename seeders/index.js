@@ -34,6 +34,7 @@ const {
     // await seedBlogs(user.id);
     
     await require("./ownerSeeder")();
+    await require("./aboutUsSeeder")();
     const sectionMap = await require("./sectionSeeder")();
     await require("./contentSeeder")(sectionMap);
     await require("./serviceSeeder")(sectionMap);

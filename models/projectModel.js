@@ -20,12 +20,13 @@ module.exports = (sequelize, DataTypes) => {
       date: DataTypes.DATE,
       client: DataTypes.STRING,
       description: DataTypes.TEXT,
+      status: DataTypes.STRING,
     },{
       timestamps: true,
     });
   
     Project.associate = models => {
-      Project.belongsTo(models.Section, { foreignKey: 'section_id' });
+      Project.belongsTo(models.Section, { foreignKey: 'section_id', as: 'section'});
     };
   
     return Project;

@@ -1,0 +1,11 @@
+const { AboutUs } = require("../models/index");
+const image_url = "https://res.cloudinary.com/dq6mvqivd/image/upload/v1750154755/ImpactAcross/images/iwpna55jrk2jbixfridf.jpg";
+
+module.exports = async () => {
+  await AboutUs.create({
+    description1: `ImpactAcross is an Ethiopia-based research and advisory firm with a liaison office in Cape Town, South Africa. We are dedicated to supporting governments, donors, and development partners to drive sustainable, inclusive progress across Africa. Founded in June 2018 under the business name <em>ABBABOR Development Consult</em>, the firm was rebranded in 2024 as ImpactAcross to reflect its expanded vision, broader geographical reach, and integrated service offerings. The company was established by Dr. Kassahun Kelifa Suleman, a respected and experienced consultant in the international development arena, widely recognized for his contributions to climate change, food security, rural livelihoods, and natural resource governance.`,
+    // description3: `ImpactAcross was created to address persistent and emerging gaps in Africa’s development landscape. These include the limited use of data and research to inform evidence-based policy and program design, fragmented development efforts that overlook cross-sectoral linkages, and capacity constraints among local actors and institutions that hinder the delivery of sustainable, scalable solutions. The firm also responds to the need for context-sensitive strategies that are both locally grounded and globally informed, as well as the weak alignment between research, policy, and implementation that often undermines long-term development impact. The name <em>ImpactAcross</em> captures the company’s mission to generate meaningful, evidence-driven change across sectors, geographies, and stakeholder groups.`,
+    description2: `At ImpactAcross, we don’t just analyze data—we translate it into actionable, context-relevant solutions that improve lives, inform policy, and contribute to a resilient, sustainable future for Africa. Through our collaborative approach and evidence-based methods, we strive to be a trusted partner in shaping transformative development outcomes across the continent.`,
+    image_url,
+  });
+};
