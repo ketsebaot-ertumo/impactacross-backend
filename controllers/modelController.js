@@ -1,11 +1,18 @@
 // Similar controller structure applies for: 
 // Section, Phone, Location, OwnerLink, WhatWeDoImage, WhoWeAreContent, Service, Team, TeamLink, Project, Partner
 
+const { sequelize } = require("../models/index");
+const { getPublicIdFromUrl, cloudinary } = require("../utils/cloudinary");
 
 // === GET BY NAME ===
 exports.getModelByValue = (Model, fieldName, include = []) => async (req, res) => {
     const { value } = req.params;
     const fieldName = req.query.field || 'key';
+
+    if (!value) {
+      return res.status(400).json({success: false, error: 'Missing a required field ID.' });
+    }
+
     try {
       // const data = await Model.findOne({
         const data = await Model.findAll({
@@ -29,6 +36,10 @@ exports.getModelByValue = (Model, fieldName, include = []) => async (req, res) =
 // === GET BY ID ===
 exports.getModelById = (Model, include = []) => async (req, res) => {
   const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({success: false, error: 'Missing a required field ID.' });
+  }
+  
   try {
     const data = await Model.findByPk(id,{ include});
 
@@ -66,7 +77,7 @@ exports.getLatestModel = (Model, include = []) => async (req, res) => {
   
 
 
-// create
+// === CREATE A NEW DATA ===
 exports.createModel = (Model) => async (req, res) => {
     try {
       const existingItem = Model.findOne(req.body);
@@ -81,6 +92,8 @@ exports.createModel = (Model) => async (req, res) => {
     }
   };
   
+
+  // === GET ALL DATA ===
   exports.getAllModels = (Model, include = []) => async (req, res) => {
     const { page = 1, limit = 10 } = req.query;
     try {
@@ -107,31 +120,68 @@ exports.createModel = (Model) => async (req, res) => {
   
   // === UPDATE ===
   exports.updateModel = (Model) => async (req, res) => {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({success: false, error: 'Missing a required field ID.' });
+    }
+
+    const t = await sequelize.transaction();
     try {
-      const { id } = req.params;
-      const [updated] = await Model.update(req.body, { where: { id } });
+      const record = await Model.findByPk(id, {lock: t.LOCK.UPDATE, transaction: t});
+      if (!record) {
+        await t.rollback();
+        return res.status(404).json({success: false, error: 'Item not found' });
+      }
+
+      const [updated] = await Model.update(req.body, { where: { id }, transaction: t });
+
+      await t.commit();
       if (updated) {
         const updatedItem = await Model.findByPk(id);
-        res.status(200).json(updatedItem);
+        return res.status(200).json(updatedItem);
       } else {
-        res.status(404).json({ error: 'Item not found' });
+        return res.status(404).json({ error: 'Item not found' });
       }
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      await t.rollback();
+      console.log("Error occur on update:", error)
+      return res.status(500).json({ success:false, error: error.message });
     }
   };
   
+  // === DELETE AN ITEM ====
   exports.deleteModel = (Model) => async (req, res) => {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({success: false, error: 'Missing a required field ID.' });
+    }
+
+    const t = await sequelize.transaction();
     try {
-      const { id } = req.params;
-      const deleted = await Model.destroy({ where: { id } });
+      const record = await Model.findByPk(id, {lock: t.LOCK.UPDATE, transaction: t});
+      if (!record) {
+        await t.rollback();
+        return res.status(404).json({success: false, error: 'Item not found' });
+      }
+
+      const imageUrl = record.image_url || record.imageURL;
+      if (imageUrl) {
+        const publicId = getPublicIdFromUrl(imageUrl);
+        await cloudinary.uploader.destroy(publicId);
+      }
+
+      const deleted = await Model.destroy({ where: { id }, transaction: t});
+
+      await t.commit();
       if (deleted) {
-        res.status(204).send();
+        return res.status(204).send({sucess: true, message: 'Successfully Deleted.'});
       } else {
-        res.status(404).json({ error: 'Item not found' });
+        return res.status(404).json({success: false,  error: 'Item not found' });
       }
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      await t.rollback();
+      console.log("Error occur on delete:", error)
+      return res.status(500).json({success: false, message: 'Server Error', error: error.message });
     }
   };
   

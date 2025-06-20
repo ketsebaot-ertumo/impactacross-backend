@@ -3,7 +3,7 @@ const { Users } = require('../models/index');
 
 const seedUsers = async () => {
     await Users.sync({ force: true });
-    const password = await bcryptjs.hash('admin', 10);
+    const password = await bcryptjs.hash('admin123', 10);
 
     // Create Users
     const users = await Users.bulkCreate([
