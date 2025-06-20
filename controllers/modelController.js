@@ -164,7 +164,8 @@ exports.createModel = (Model) => async (req, res) => {
         return res.status(404).json({success: false, error: 'Item not found' });
       }
 
-      const imageUrl = record.image_url || record.imageURL;
+      // 'image_url', 'imageURL', 'logo_url', 'fileURL', 'mediaURL', "video_url"
+      const imageUrl = record.image_url || record.imageURL || record.logo_url || record.mediaURL || record.video_url || record.fileURL;
       if (imageUrl) {
         const publicId = getPublicIdFromUrl(imageUrl);
         await cloudinary.uploader.destroy(publicId);
