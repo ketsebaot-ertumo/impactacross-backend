@@ -42,6 +42,7 @@ const {
 
     // await Gallery.sync({ force: true });
     await require("./gallerySeeders")();
+    await require("./expertiseSeeders")();
 
     console.log("✅ Seeding complete.");
   } catch (err) {

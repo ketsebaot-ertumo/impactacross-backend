@@ -41,7 +41,7 @@ module.exports = async (sectionMap) => {
     {
       section_id: sectionMap["partner"],
       name: "Bread for the World/PADD",
-      logo_url: "https://res.cloudinary.com/dq6mvqivd/image/upload/v1749820736/ImpactAcross/partners/download_vpcqjb.png",
+      logo_url: "https://res.cloudinary.com/dq6mvqivd/image/upload/v1750419967/ImpactAcross/images/WhatsApp_Image_2025-06-17_at_9.10.20_PM_vgv7jb.jpg",
       link: "https://impactacross.com"
     },
     {

@@ -3,6 +3,8 @@
 
 const { sequelize } = require("../models/index");
 const { getPublicIdFromUrl, cloudinary } = require("../utils/cloudinary");
+const streamifier = require('streamifier');
+
 
 // === GET BY NAME ===
 exports.getModelByValue = (Model, fieldName, include = []) => async (req, res) => {
@@ -79,19 +81,88 @@ exports.getLatestModel = (Model, include = []) => async (req, res) => {
 
 // === CREATE A NEW DATA ===
 exports.createModel = (Model) => async (req, res) => {
-    try {
-      const existingItem = Model.findOne(req.body);
-      if(existingItem){
-        return res.status(400).json({success: false, message: "Item already exist."})
-      }
-      const item = await Model.create(req.body);
-      return res.status(201).json({success: true, data: item});
-    } catch (error) {
-      console.log("Error occur while creating Items:", error)
-      return res.status(500).json({success: false, error: error.message });
+  let uploadedImage = null;
+
+  try {
+    if (!req.body || Object.keys(req.body).length === 0) {
+      return res.status(400).json({ success: false, error: "Missing required fields." });
     }
-  };
-  
+
+    const {
+      image,
+      image_url,
+      imageURL,
+      logo_url,
+      fileURL,
+      mediaURL,
+      video_url,
+      ...rest
+    } = req.body;
+
+    const imageFields = {
+      image,
+      image_url,
+      imageURL,
+      logo_url,
+      fileURL,
+      mediaURL,
+      video_url,
+    };
+
+    // Find the field key which has base64 string (data URL)
+    const fieldKey = Object.keys(imageFields).find((key) => {
+      const val = imageFields[key];
+      return val && typeof val === "string" && val.trim().startsWith("data:");
+    });
+
+    if (fieldKey) {
+      const base64Str = imageFields[fieldKey];
+      const base64Data = base64Str.replace(/^data:[A-Za-z-+/]+;base64,/, '');
+      const buffer = Buffer.from(base64Data, 'base64');
+
+      // Upload via streamifier and cloudinary upload_stream
+      uploadedImage = await new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          { folder: "ImpactAcross/images" },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
+        streamifier.createReadStream(buffer).pipe(uploadStream);
+      });
+    }
+
+    // Check if item exists with other fields
+    const existingItem = await Model.findOne({ where: rest });
+    if (existingItem) {
+      if (uploadedImage?.public_id) {
+        await cloudinary.uploader.destroy(uploadedImage.public_id);
+      }
+      return res.status(400).json({ success: false, message: "Item already exists." });
+    }
+
+    const itemData = { ...rest };
+    if (uploadedImage?.secure_url && fieldKey) {
+      itemData[fieldKey] = uploadedImage.secure_url;
+    }
+
+    const item = await Model.create(itemData);
+
+    return res.status(201).json({
+      success: true,
+      message: "Successfully Created.",
+      data: item,
+    });
+  } catch (error) {
+    console.error("Error while creating item:", error);
+    if (uploadedImage?.public_id) {
+      await cloudinary.uploader.destroy(uploadedImage.public_id);
+    }
+    return res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 
   // === GET ALL DATA ===
   exports.getAllModels = (Model, include = []) => async (req, res) => {
@@ -118,36 +189,98 @@ exports.createModel = (Model) => async (req, res) => {
     }
   };
   
-  // === UPDATE ===
-  exports.updateModel = (Model) => async (req, res) => {
-    const { id } = req.params;
-    if (!id) {
-      return res.status(400).json({success: false, error: 'Missing a required field ID.' });
-    }
 
-    const t = await sequelize.transaction();
-    try {
-      const record = await Model.findByPk(id, {lock: t.LOCK.UPDATE, transaction: t});
-      if (!record) {
-        await t.rollback();
-        return res.status(404).json({success: false, error: 'Item not found' });
-      }
+// === UPDATE ===
+exports.updateModel = (Model) => async (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({ success: false, error: 'Missing a required field ID.' });
+  }
 
-      const [updated] = await Model.update(req.body, { where: { id }, transaction: t });
+  const t = await sequelize.transaction();
+  let uploadedImage = null;
 
-      await t.commit();
-      if (updated) {
-        const updatedItem = await Model.findByPk(id);
-        return res.status(200).json(updatedItem);
-      } else {
-        return res.status(404).json({ error: 'Item not found' });
-      }
-    } catch (error) {
+  try {
+    const record = await Model.findByPk(id, { lock: t.LOCK.UPDATE, transaction: t });
+    if (!record) {
       await t.rollback();
-      console.log("Error occur on update:", error)
-      return res.status(500).json({ success:false, error: error.message });
+      return res.status(404).json({ success: false, error: 'Item not found' });
     }
-  };
+
+    const {
+      image,
+      image_url,
+      imageURL,
+      logo_url,
+      fileURL,
+      mediaURL,
+      video_url,
+      ...rest
+    } = req.body;
+
+    const imageFields = {
+      image,
+      image_url,
+      imageURL,
+      logo_url,
+      fileURL,
+      mediaURL,
+      video_url,
+    };
+
+    const fieldKey = Object.keys(imageFields).find((key) => {
+      const val = imageFields[key];
+      return val && typeof val === "string" && val.trim().startsWith("data:");
+    });
+
+    if (fieldKey) {
+      const base64Str = imageFields[fieldKey];
+      const base64Data = base64Str.replace(/^data:[A-Za-z-+/]+;base64,/, '');
+      const buffer = Buffer.from(base64Data, 'base64');
+
+      uploadedImage = await new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          { folder: "ImpactAcross/images" },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
+        streamifier.createReadStream(buffer).pipe(uploadStream);
+      });
+
+      // Delete old image if exists
+      const oldImageUrl = record[fieldKey];
+      if (oldImageUrl) {
+        const publicId = oldImageUrl.split("/").slice(-1)[0].split(".")[0];
+        await cloudinary.uploader.destroy(`ImpactAcross/images/${publicId}`);
+      }
+
+      rest[fieldKey] = uploadedImage.secure_url;
+    }
+
+    await Model.update(rest, { where: { id }, transaction: t });
+    await t.commit();
+
+    const updatedItem = await Model.findByPk(id);
+    return res.status(200).json({
+      success: true,
+      message: "Successfully Updated.",
+      data: updatedItem,
+    });
+  } catch (error) {
+    await t.rollback();
+    console.error("Error during update:", error);
+
+    if (uploadedImage?.public_id) {
+      await cloudinary.uploader.destroy(uploadedImage.public_id);
+    }
+
+    return res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+  
   
   // === DELETE AN ITEM ====
   exports.deleteModel = (Model) => async (req, res) => {
@@ -175,14 +308,14 @@ exports.createModel = (Model) => async (req, res) => {
 
       await t.commit();
       if (deleted) {
-        return res.status(204).send({sucess: true, message: 'Successfully Deleted.'});
+        return res.status(200).send({sucess: true, message: 'Successfully Deleted.'});
       } else {
         return res.status(404).json({success: false,  error: 'Item not found' });
       }
     } catch (error) {
       await t.rollback();
       console.log("Error occur on delete:", error)
-      return res.status(500).json({success: false, message: 'Server Error', error: error.message });
+      return res.status(500).json({success: false, error: error.message });
     }
   };
   
