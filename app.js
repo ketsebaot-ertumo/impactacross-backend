@@ -12,14 +12,14 @@ app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ limit: "25mb", extended: true }));
 app.use(cookieParser());
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  message: "Too many requests from this IP, please try again later.",
-});
-app.use(limiter);
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000,
+//   max: 100,
+//   message: "Too many requests from this IP, please try again later.",
+// });
+// app.use(limiter);
 
-const allowedOrigins = ["http://localhost:3000","https://impactacross.com", "https://76.76.21.21"];
+const allowedOrigins = ["http://localhost:3000","https://impactacross.com","https://www.impactacross.com", "https://76.76.21.21"];
 const corsOptions = {
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {

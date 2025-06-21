@@ -3,7 +3,7 @@ const router = express.Router();
 const controllers = require('../controllers/modelController');
 const { 
   Phone, Location, OwnerLink, 
-  Section, WhatWeDoImage, AboutUs, Gallery, Expertise,
+  Section, WhatWeDoImage, AboutUs, Gallery, Expertise, Blogs, Multimedias, Trainings, Publications,
   Service, Team, TeamLink, Project, Partner 
 } = require('../models/index');
 
@@ -39,5 +39,11 @@ bindCRUD('teams', Team, [{ model: Section, as: 'section' }]);
 bindCRUD('team-links', TeamLink);
 bindCRUD('projects', Project, [{ model: Section, as: 'section' }]);
 bindCRUD('partners', Partner, [{ model: Section, as: 'section' }]);
+
+// posts
+bindCRUD('blogs', Blogs);
+bindCRUD('publications', Publications);
+bindCRUD('trainings', Trainings);
+bindCRUD('multimedias', Multimedias);
 
 module.exports = router;

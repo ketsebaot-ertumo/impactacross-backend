@@ -1,5 +1,5 @@
 const { AboutUs } = require("../models/index");
-const image_url = "https://res.cloudinary.com/dq6mvqivd/image/upload/v1750154755/ImpactAcross/images/iwpna55jrk2jbixfridf.jpg";
+const image_url = "https://res.cloudinary.com/dq6mvqivd/image/upload/v1749649796/ImpactAcross/owner/download_luvang.jpg";
 
 module.exports = async () => {
   await AboutUs.create({
