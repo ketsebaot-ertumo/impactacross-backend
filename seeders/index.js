@@ -1,7 +1,7 @@
 const {
   sequelize,
   Users,
-  Blogs,
+  Blog,
   Publications,
   Multimedias,
   Trainings,

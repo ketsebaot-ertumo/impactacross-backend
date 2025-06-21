@@ -3,7 +3,7 @@ const router = express.Router();
 const controllers = require('../controllers/modelController');
 const { 
   Phone, Location, OwnerLink, 
-  Section, WhatWeDoImage, AboutUs, Gallery, Expertise, Blogs, Multimedias, Trainings, Publications,
+  Section, WhatWeDoImage, AboutUs, Gallery, Expertise, Blog, Multimedias, Trainings, Publication,
   Service, Team, TeamLink, Project, Partner 
 } = require('../models/index');
 
@@ -41,8 +41,8 @@ bindCRUD('projects', Project, [{ model: Section, as: 'section' }]);
 bindCRUD('partners', Partner, [{ model: Section, as: 'section' }]);
 
 // posts
-bindCRUD('blogs', Blogs);
-bindCRUD('publications', Publications);
+bindCRUD('blogs', Blog);
+bindCRUD('publications', Publication);
 bindCRUD('trainings', Trainings);
 bindCRUD('multimedias', Multimedias);
 
