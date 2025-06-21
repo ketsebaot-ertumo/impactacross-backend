@@ -18,8 +18,8 @@ module.exports = async () => {
   ]);
 
   await Location.bulkCreate([
-    { address: "Bole woreda 04, Roadmap Building, Addis Ababa, Ethiopia", lat: 0, lng: 0, owner_id: owner.id, },
-    { address: "9 Vintage 47, Flacon Street, D'Urbanvalle, Cape Town 7550, South Africa", lat: 0, lng: 0, owner_id: owner.id, },
+    { address: "Bole Sub City, Woreda 04\nRoadmap Building (Near Lem Hotel)\nAddis Ababa, Ethiopia.", lat: 0, lng: 0, owner_id: owner.id, },
+    { address: "9 Vintage\n47 Flacon Street\nD’Urbanvalle\nCape Town 7550\nSouth Africa", lat: 0, lng: 0, owner_id: owner.id, },
   ]);
 
   await OwnerLink.bulkCreate([
