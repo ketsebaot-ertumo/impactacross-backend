@@ -8,7 +8,7 @@ module.exports = async (sectionMap) => {
       section_id: sectionMap["team"],
       name: "Kassahun K. Suleman(PhD)",
       position: "Founder & CTO",
-      email: "kassahunks@impactacross.com",
+      email: "Kassahun.kelifa@impactacross.com",
       linkedin: "https://linkedin.com/in/",
       facebook: "https://facebook.com",
       description: "Kassahun has a PhD in Development Studies from University of the Western Cape in South Africa.  With 13+ years of experience working in different countries around the world, he has deep domain expertise in a broad cross section of disciplines ranging from agricultural development and food systems, rural development, natural resources governance, climate change adaptation and rural economy. Having managed and executed large and complex rural development projects in Ethiopia and conducted scientific research in various African countries, he is now proud to consolidate his 13+ years of research and project/program management expertise with that of clients who have the same values and beliefs in evidence-based and high quality solutions.",

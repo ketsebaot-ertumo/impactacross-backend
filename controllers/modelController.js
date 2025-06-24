@@ -1,5 +1,5 @@
 // Similar controller structure applies for: 
-// Section, Phone, Location, OwnerLink, WhatWeDoImage, WhoWeAreContent, Service, Team, TeamLink, Project, Partner
+// Section, Phone, Location, OwnerLink, WhatWeDoImage, WhoWeAreContent, Service, Team, TeamLink, Project, Partner, Blog, Publication, Multimedia, Training, AboutUs, Expertise
 
 const { sequelize } = require("../models/index");
 const { getPublicIdFromUrl, cloudinary } = require("../utils/cloudinary");
