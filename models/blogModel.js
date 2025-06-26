@@ -35,10 +35,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT,
             allowNull: false,
         },
-        imageURL: {
-            type: DataTypes.STRING(500),
-            allowNull: true
-        },
         publishedAt: {
             type: DataTypes.DATE,
             allowNull: true
@@ -50,7 +46,11 @@ module.exports = (sequelize, DataTypes) => {
             validate: {
                 isIn: [["Draft", "Published", "Archived"]],
             },
-        },        
+        },   
+        imageURL: {
+            type: DataTypes.STRING(500),
+            allowNull: true
+        },     
     },{
         timestamps: true,
     });

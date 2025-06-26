@@ -8,13 +8,13 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         allowNull: false,
       },
-      logo_url: DataTypes.STRING,
       primary_color: DataTypes.STRING,
       name: DataTypes.STRING,
       title: DataTypes.STRING,
       font_family: DataTypes.STRING,
       font_url: DataTypes.TEXT,
       email: DataTypes.STRING,
+      logo_url: DataTypes.STRING,
     },{
       timestamps: true, 
       freezeTableName: true

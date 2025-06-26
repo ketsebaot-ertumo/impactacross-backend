@@ -138,14 +138,14 @@ module.exports = (sequelize, DataTypes) => {
               isUrl: true,
             },
         },
-        image_url: {
-            type: DataTypes.TEXT,
-            allowNull: true,
-        },
         name: {
             type: DataTypes.STRING,
             allowNull: false,
             defaultValue: 'publications'
+        },
+        image_url: {
+            type: DataTypes.TEXT,
+            allowNull: true,
         },
     });
   

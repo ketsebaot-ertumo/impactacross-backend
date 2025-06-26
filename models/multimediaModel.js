@@ -42,16 +42,6 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             defaultValue: "Image",
         },
-        mediaURL: {
-            type: DataTypes.STRING(1000),
-            allowNull: false,
-            comment: "Public or internal URL to the media file",
-        },
-        thumbnailURL: {
-            type: DataTypes.STRING(1000),
-            allowNull: true,
-            comment: "Optional thumbnail or preview image",
-        },
         fileSize: {
             type: DataTypes.INTEGER,
             allowNull: true,
@@ -81,6 +71,16 @@ module.exports = (sequelize, DataTypes) => {
         publishedAt: {
             type: DataTypes.DATE,
             allowNull: true,
+        },
+        mediaURL: {
+            type: DataTypes.STRING(1000),
+            allowNull: false,
+            comment: "Public or internal URL to the media file",
+        },
+        thumbnailURL: {
+            type: DataTypes.STRING(1000),
+            allowNull: true,
+            comment: "Optional thumbnail or preview image",
         },
     }, {
         timestamps: true,

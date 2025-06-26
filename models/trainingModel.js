@@ -55,10 +55,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
-      imageURL: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
       certification: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
@@ -67,6 +63,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ENUM('Draft', 'Completed', 'Archived'),
         allowNull: false,
         defaultValue: 'Draft',
+      },
+      imageURL: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
     }, {
       timestamps: true,
