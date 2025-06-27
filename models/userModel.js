@@ -50,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
         role: {
             type: DataTypes.STRING,
             allowNull: false,
-            defaultValue: 'admin',
+            defaultValue: 'user',
             // validate: {
             //     isIn: [ROLES],
             // },
@@ -68,11 +68,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: true,
             defaultValue: null,
-        },
-        userType: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            defaultValue: 'User',
         },
     },{
         timestamps: true,

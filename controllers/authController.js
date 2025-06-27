@@ -16,10 +16,10 @@ exports.signup = async (req, res, next) => {
   const t = await sequelize.transaction();
   try {
       if (!firstName || !lastName || !email || !password) {
-          return res.status(400).json({ success: false, message: 'All fields are required.' });
+          return res.status(400).json({ success: false, error: 'All fields are required.' });
       }
       if (!/\S+@\S+\.\S+/.test(email)) {
-          return res.status(400).json({ success: false, message: 'Invalid email format.' });
+          return res.status(400).json({ success: false, error: 'Invalid email format.' });
       }
       const userData = {
         firstName: capitalizeName(firstName), lastName: capitalizeName(lastName), email, ...(phoneNumber ? { phoneNumber } : {}), password
@@ -30,7 +30,7 @@ exports.signup = async (req, res, next) => {
           transaction: t
       });
       if (!created) {
-          return res.status(400).json({ success: false, message: 'Email already in use.' });
+          return res.status(400).json({ success: false, error: 'Email already in use.' });
       }
       // Send email inside transaction
       // const confirmationLink = `${process.env.CLIENT_URL}/confirm/${newUser.confirmationCode}`;
@@ -41,7 +41,7 @@ exports.signup = async (req, res, next) => {
   } catch (error) {
       await t.rollback();
       console.error('Error during signup:', error);
-      return res.status(500).json({ success: false, message: 'Internal Server Error.' });
+      return res.status(500).json({ success: false, error: "Internal server error.", details: error.message});
   }
 };
 
@@ -50,7 +50,7 @@ exports.confirm = async (req, res) => {
   const { email} = req.body;
   const confirmationCode = req.params.confirmationCode;
   if (!confirmationCode || !email) {
-    return res.status(400).json({ success: false, message: "Please provide all required fields." });
+    return res.status(400).json({ success: false, error: "Please provide all required fields." });
   }
   try {
     const t = await sequelize.transaction();
@@ -62,14 +62,14 @@ exports.confirm = async (req, res) => {
     });
     if (!existingUser) {
       await t.rollback();
-      return res.status(404).json({ success: false, message: 'The account associated with this email has either already been confirmed or does not exist.',});
+      return res.status(404).json({ success: false, error: 'The account associated with this email has either already been confirmed or does not exist.',});
     }
     existingUser.isConfirmed = true;
     await existingUser.save({transaction: t});
     sendTokenResponse(existingUser, 200, res);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ success: false, message: error.message, stack: error.stack });
+    return res.status(500).json({ success: false, error: "Internal server error.", details: error.message});
   }
 };
 
@@ -78,20 +78,20 @@ exports.signin = async (req, res) => {
   const { email, password } = req.body;
   try {
     if (!email || !password) {
-      return res.status(400).json({ success: false, message: "Please provide the required fields." });
+      return res.status(400).json({ success: false, error: "Please provide the required fields." });
     }
     const existingUser = await Users.findOne({ where: { email: { [Op.iLike]: email } }, attributes: { include: ['password',] }, });
     if (!existingUser) {
-        return res.status(404).json({ success: false, message: 'No account found with the provided email address.',});
+        return res.status(404).json({ success: false, error: 'No account found with the provided email address.',});
     }
     const isMatched = await existingUser.comparePassword(password);
     if (!isMatched) {
-      return res.status(401).json({ success: false, message: "Invalid credential." });
+      return res.status(401).json({ success: false, error: "Authentication failed. Please check your credentials and try again." });
     }
     sendTokenResponse(existingUser, 200, res);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ success: false, message: error.message, stack: error.stack });
+    return res.status(500).json({ success: false, error: "Internal server error.", details: error.message});
   }
 };
 
@@ -103,7 +103,7 @@ exports.logout = async (req, res, next) => {
     return res.status(204).json({success: true, message: "Successfully logged out." })
   }catch(err){
     console.error(err);
-    return res.status(500).json({ success: false, message: err.message, stack: err.stack });
+    return res.status(500).json({ success: false, error: "Internal server error.", details: error.message});
   }
 }
 
@@ -112,7 +112,7 @@ exports.logout = async (req, res, next) => {
 exports.forgot = async (req, res) => {
   const { email } = req.body;
   if (!email) {
-    return res.status(400).json({ success: false, message: "Please provide an email." });
+    return res.status(400).json({ success: false, error: "Please provide an email." });
   }
   const t = await sequelize.transaction();
   try {
@@ -120,7 +120,7 @@ exports.forgot = async (req, res) => {
   
     if (!user) {
       await t.rollback();
-      return res.status(404).json({ success: false, message: "No account found with this email." });
+      return res.status(404).json({ success: false, error: "No account found with this email." });
     }
 
     // Generate a unique reset code
@@ -131,7 +131,7 @@ exports.forgot = async (req, res) => {
     );
     if (updated === 0) {
       await t.rollback();
-      return res.status(404).json({ success: false, message: "No account found with this email." });
+      return res.status(404).json({ success: false, error: "No account found with this email." });
     }
 
     const resetLink = `${process.env.CLIENT_URL}/${resetCode}`;
@@ -141,7 +141,7 @@ exports.forgot = async (req, res) => {
   } catch (error) {
     await t.rollback();
     console.error("Forgot password error:", error);
-    return res.status(500).json({ success: false, message: "Internal Server Error" });
+    return res.status(500).json({ success: false, error: "Internal server error.", details: error.message});
   }
 };
 
@@ -151,7 +151,7 @@ exports.reset = async (req, res) => {
   const { email, password } = req.body;
   const resetCode = req.params.resetCode;
   if (!email || !password || !resetCode) {
-    return res.status(400).json({ success: false, message: "All fields are required." });
+    return res.status(400).json({ success: false, error: "All fields are required." });
   }
   const transaction = await sequelize.transaction();
   try {
@@ -164,12 +164,12 @@ exports.reset = async (req, res) => {
     });
     if (!existingUser) {
       await t.rollback();
-      return res.status(400).json({ success: false, message: "Invalid reset code or email address." });
+      return res.status(400).json({ success: false, error: "Invalid reset code or email address." });
     }
     // Check if reset code is expired (valid for 10 minutes)
     const resetExpirationTime = moment.utc(existingUser.updatedAt).add(10, "minutes");
     if (moment.utc().isAfter(resetExpirationTime)) {
-      return res.status(410).json({ success: false, message: "Reset code expired. Please request a new one." });
+      return res.status(410).json({ success: false, error: "Reset code expired. Please request a new one." });
     }
     // Hash the new password
     existingUser.password = password;
@@ -181,7 +181,7 @@ exports.reset = async (req, res) => {
   } catch (error) {
     await transaction.rollback();
     console.error("Password reset error:", error);
-    return res.status(500).json({ success: false, message: "An error occurred while resetting the password.", error: error.message });
+    return res.status(500).json({ success: false, error: "Internal server error.", details: error.message});
   }
 };
 
