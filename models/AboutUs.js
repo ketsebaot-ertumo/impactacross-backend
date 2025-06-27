@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       description1: DataTypes.TEXT,
       description2: DataTypes.TEXT,
       // description3: DataTypes.TEXT,
-      image_url: DataTypes.STRING,
+      image_url: DataTypes.TEXT,
     },{
       timestamps: true,
     });
