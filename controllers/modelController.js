@@ -82,12 +82,14 @@ exports.getLatestModel = (Model, include = []) => async (req, res) => {
 // === GET ALL DATA ===
 exports.getAllModels = (Model, include = []) => async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
+  const order = Model.name !== 'Team' ? [['createdAt', 'DESC']] : undefined;
   try {
     const data = await Model.findAndCountAll({
       include,
       limit: parseInt(limit),
       offset: (page - 1) * limit,
-      order: [['createdAt', 'DESC']],
+      ...(order && { order }),
+      // order: [['createdAt', 'DESC']],
     });
 
     return res.status(200).json({
@@ -231,7 +233,7 @@ exports.updateModel = (Model) => async (req, res) => {
       rest[fieldKey] = uploadedImage.secure_url;
     }
     
-    const [count, rows] = await Model.update(req.body, {
+    const [count, rows] = await Model.update(rest, {
       where: { id }, transaction: t, returning: true
     });
 
