@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       linkedin: DataTypes.STRING,
       facebook: DataTypes.STRING,
       position: DataTypes.STRING,
-      image_url: DataTypes.STRING,
+      image_url: DataTypes.TEXT,
     },{
       timestamps: true,
       freezeTableName: true
