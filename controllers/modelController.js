@@ -61,7 +61,6 @@ exports.getModelById = (Model, include = []) => async (req, res) => {
   // === GET LATEST ===
 exports.getLatestModel = (Model, include = []) => async (req, res) => {
   try {
-    // const data = await Model.findOne({
       const data = await Model.findOne({
         order: [['createdAt', 'DESC']],
         include,
@@ -118,11 +117,11 @@ exports.createModel = (Model) => async (req, res) => {
   }
 
   const {
-    image, image_url, imageURL, logo_url, mediaURL, ...rest
+    image, image_url, imageURL, logo_url, mediaURL, media_url, ...rest
   } = req.body;
 
   const imageFields = {
-    image, image_url, imageURL, logo_url, mediaURL
+    image, image_url, imageURL, logo_url, mediaURL, media_url
   };
 
   const t = await sequelize.transaction();
@@ -132,11 +131,21 @@ exports.createModel = (Model) => async (req, res) => {
       return res.status(400).json({ success: false, message: "Item already exists." });
     }
 
-    // Find the field key which has base64 string (data URL)
-    const fieldKey = Object.keys(imageFields).find((key) => {
+    let fieldKey = null;
+    let directUrl = null;
+
+    for (const key of Object.keys(imageFields)) {
       const val = imageFields[key];
-      return val && typeof val === "string" && val.trim().startsWith("data:");
-    });
+      if (val && typeof val === "string") {
+        if (val.startsWith("https://")) {
+          directUrl = { key, url: val };
+          break;
+        } else if (val.trim().startsWith("data:")) {
+          fieldKey = key;
+          break;
+        }
+      }
+    }
 
     if (fieldKey) {
       const base64Str = imageFields[fieldKey];
@@ -160,6 +169,10 @@ exports.createModel = (Model) => async (req, res) => {
     if (uploadedImage?.secure_url && fieldKey) {
       itemData[fieldKey] = uploadedImage.secure_url;
     }
+
+    if (directUrl) {
+      itemData[directUrl.key] = directUrl.url;
+    }    
 
     const item = await Model.create(itemData, {transaction: t});
 
@@ -196,17 +209,29 @@ exports.updateModel = (Model) => async (req, res) => {
     }
 
     const {
-      image, image_url, imageURL, logo_url, mediaURL, ...rest
+      image, image_url, imageURL, logo_url, mediaURL, media_url, ...rest
     } = req.body;
 
     const imageFields = {
-      image, image_url, imageURL, logo_url,mediaURL,
+      image, image_url, imageURL, logo_url,mediaURL, media_url
     };
 
-    const fieldKey = Object.keys(imageFields).find((key) => {
+    let fieldKey = null;
+    let directUrl = null;
+
+    for (const key of Object.keys(imageFields)) {
       const val = imageFields[key];
-      return val && typeof val === "string" && val.trim().startsWith("data:");
-    });
+      if (val && typeof val === "string") {
+        if (val.startsWith("https://")) {
+          directUrl = { key, url: val };
+          break;
+        } else if (val.trim().startsWith("data:")) {
+          fieldKey = key;
+          break;
+        }
+      }
+    }
+    
 
     if (fieldKey) {
       const base64Str = imageFields[fieldKey];
@@ -230,8 +255,13 @@ exports.updateModel = (Model) => async (req, res) => {
         const publicId = oldImageUrl.split("/").slice(-1)[0].split(".")[0];
         await cloudinary.uploader.destroy(`ImpactAcross/images/${publicId}`);
       }
+
       rest[fieldKey] = uploadedImage.secure_url;
     }
+
+    if (directUrl) {
+      rest[directUrl.key] = directUrl.url;
+    } 
     
     const [count, rows] = await Model.update(rest, {
       where: { id }, transaction: t, returning: true
@@ -275,7 +305,7 @@ exports.updateModel = (Model) => async (req, res) => {
       }
 
       await record.destroy({ where: { id }, transaction: t});
-      const imageUrl = record.image_url || record.imageURL || record.logo_url || record.mediaURL;
+      const imageUrl = record.image_url || record.imageURL || record.logo_url || record.mediaURL || record.media_url;
       if (imageUrl) {
         const publicId = getPublicIdFromUrl(imageUrl);
         await cloudinary.uploader.destroy(publicId);

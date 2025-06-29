@@ -23,8 +23,7 @@ const {
   try {
     console.log("Syncing database...");
     // await sequelize.sync({ force: true });
-    await Section.sync({ force: true });
-    await Team.sync({ force: true });
+    // await Team.sync({ force: true });
 
     // console.log("Seeding data...");
     // const user = await require("./userSeeder")();
@@ -35,15 +34,15 @@ const {
     
     // await require("./ownerSeeder")();
     // await require("./aboutUsSeeder")();
-    const sectionMap = await require("./sectionSeeder")();
+    // const sectionMap = await require("./sectionSeeder")();
     // await require("./contentSeeder")(sectionMap);
     // await require("./serviceSeeder")(sectionMap);
-    await require("./teamSeeder")(sectionMap);
+    // await require("./teamSeeder")(sectionMap);
     // await require("./projectSeeder")(sectionMap);
     // await require("./partnerSeeder")(sectionMap);
 
-    // await Gallery.sync({ force: true });
-    // await require("./gallerySeeders")();
+    await Gallery.sync({ force: true });
+    await require("./gallerySeeders")();
     // await require("./expertiseSeeders")();
 
     console.log("✅ Seeding complete.");
