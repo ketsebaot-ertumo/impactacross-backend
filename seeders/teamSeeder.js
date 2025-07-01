@@ -65,6 +65,30 @@ module.exports = async (sectionMap) => {
       email: "test@impactacross.com",
       description: "Elise van der Mark is a Dutch anthropologist with a specialisation in Social Development in Sub-Saharan Africa. Elise obtained her Master degree Cum Laude in International Development Studies after her two bachelors in Cultural Anthropology and Visual Marketing. Before being awarded an EU scholarship for her PhD, she was self-employed conducting research, managing projects, and providing copy-writing services in Zimbabwe, South Africa and the Netherlands. She is currently pursuing her PhD at the University of the Western Cape (SA) in conjunction with the VU University Amsterdam (NL). Her focus lies on women empowerment and agency, gender relations, unpaid care work, and disability in poverty contexts. Particularly participatory action research has been at the forefront of all her research as she believes research should always be a vehicle for positive change.",
     },
+    {
+      section_id: sectionMap["team"],
+      name: "Etenesh B. Asfaw (PhD)",
+      position: "Senior Consultant - Agriculture and Rural Development",
+      image_url: 'https://res.cloudinary.com/dq6mvqivd/image/upload/v1751356679/ImpactAcross/images/ue2c8wozdgig49ciqgto.jpg',
+      linkedin: "https://linkedin.com/in/",
+      facebook: "https://facebook.com",
+      email: "test@impactacross.com",
+      description: `Dr. Etenesh Bekele Asfaw most recently served as a Senior Research Fellow at the Center for Policy Research and Outreach at Westminster International University in Tashkent, where she led and contributed to high-impact consulting, research, and advisory initiatives. In this role, she partnered with international organizations (including the EU, FAO, World Bank, OECD, and bilateral donors) to design and evaluate policy- and program-driven interventions in agricultural innovation systems, food security, land governance, and gender-responsive rural development. 
+        Prior to this, she acted as Senior Agriculture, Livelihoods and Conservation Expert at the Packard Foundation in Addis Ababa, offering strategic guidance to bolster smallholder farming systems, environmental conservation, and inclusive agribusiness. 
+        With a PhD in Development Studies from the University of South Africa focused on farmers’ collective action and agricultural transformation in Ethiopia, Dr. Asfaw is renowned for her ability to blend rigorous academic research with practical, evidence-based policy recommendations that drive sustainable and socially equitable rural transformation across Ethiopia, Uzbekistan, and beyond.`,
+    },
+    {
+      section_id: sectionMap["team"],
+      name: "Solomon Tadesse (PhD)",
+      position: "Senior Consultant - Environment and NRM",
+      image_url: 'https://res.cloudinary.com/dq6mvqivd/image/upload/v1751356803/ImpactAcross/images/dxgkck1sqybqr10tkeo9.jpg',
+      linkedin: "https://linkedin.com/in/",
+      facebook: "https://facebook.com",
+      email: "test@impactacross.com",
+      description: `Dr. Solomon Tadesse is an Assistant Professor of Environmental and Natural Resource Management in the Department of Geography and Environmental Studies at Addis Ababa University. He holds a PhD in Environment and Natural Resource Management from Addis Ababa University, with Bachelor’s and Master’s degrees from Haramaya and Addis Ababa Universities. 
+        With over 13 years of academic experience, Dr. Tadesse’s research focuses on natural resource management, participatory forest management, carbon sequestration in forest and agroforestry systems, sustainable land management, and climate change mitigation. He has led interdisciplinary projects assessing biomass carbon stocks, soil organic carbon, environmental governance, and climate adaptation strategies, publishing extensively in peer-reviewed journals. 
+        As a short-term consultant at ImpactAcross, he contributed to baseline and forest surveys for the Forest for Life project and provided participatory forest management training to stakeholders, advancing climate resilience and sustainable livelihoods.`,
+    },
   ]);
   const teamMap = {};
   teams.forEach(team => teamMap[team.name] = team.id);
