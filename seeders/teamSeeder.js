@@ -7,7 +7,7 @@ module.exports = async (sectionMap) => {
     {
       section_id: sectionMap["team"],
       name: "Kassahun K. Suleman(PhD)",
-      position: "Founder & CTO",
+      position: "Founder & CEO",
       email: "Kassahun.kelifa@impactacross.com",
       linkedin: "https://linkedin.com/in/",
       facebook: "https://facebook.com",
