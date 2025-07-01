@@ -81,14 +81,16 @@ exports.getLatestModel = (Model, include = []) => async (req, res) => {
 // === GET ALL DATA ===
 exports.getAllModels = (Model, include = []) => async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
-  const order = Model.name !== 'Team' ? [['createdAt', 'DESC']] : undefined;
+  console.log("model:", Model, "\nname:", Model.name)
+  const order = Model.name !== 'Team' ? [['updatedAt', 'DESC']] : [['sort_order', 'ASC']];
+  console.log("Order:", order);
   try {
     const data = await Model.findAndCountAll({
       include,
       limit: parseInt(limit),
       offset: (page - 1) * limit,
       ...(order && { order }),
-      // order: [['createdAt', 'DESC']],
+      // order,
     });
 
     return res.status(200).json({
@@ -266,7 +268,8 @@ exports.updateModel = (Model) => async (req, res) => {
     const [count, rows] = await Model.update(rest, {
       where: { id }, transaction: t, returning: true
     });
-
+    
+    console.log("Update count:", count, "Rows:", rows);
     await t.commit();
 
     if (count === 0 || !rows[0]) {

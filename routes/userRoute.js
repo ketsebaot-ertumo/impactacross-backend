@@ -7,7 +7,7 @@ const router = express.Router();
 router.post('/', isAuthenticated, createUser);
 router.get('/', getAll);
 router.get('/:id?', show);
-router.put('/:id?',isAuthenticated, update);
+router.put('/id/:id?',isAuthenticated, update);
 router.delete('/:id',isAuthenticated, deleteUser)
 
 module.exports = router;

@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       linkedin: DataTypes.STRING,
       facebook: DataTypes.STRING,
       position: DataTypes.STRING,
+      sort_order: DataTypes.INTEGER,
       image_url: DataTypes.TEXT,
     },{
       timestamps: true,
