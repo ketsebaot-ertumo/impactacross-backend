@@ -81,7 +81,7 @@ exports.getLatestModel = (Model, include = []) => async (req, res) => {
 // === GET ALL DATA ===
 exports.getAllModels = (Model, include = []) => async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
-  const order = Model?.name === 'Team' ? [['sort_order', 'ASC']]: Model?.name === 'Project' ? [['date', 'ASC']] : [['updatedAt', 'DESC']] ;
+  const order = Model?.name === 'Team' ? [['sort_order', 'ASC']]: Model?.name === 'Project' ? [['date', 'DESC']] : [['updatedAt', 'DESC']] ;
   console.log("Order:", order);
   try {
     const data = await Model.findAndCountAll({
