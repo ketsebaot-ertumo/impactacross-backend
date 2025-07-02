@@ -8,7 +8,7 @@ router.post('/', ownerController.createOwner);
 router.get('/', ownerController.getAllOwners);
 router.get('/latest', ownerController.getOwner);
 router.get('/:id', ownerController.getOwnerById);
-router.put('/:id', ownerController.updateOwner);
+router.put('/id/:id', ownerController.updateOwner);
 router.delete('/:id', ownerController.deleteOwner);
 
 module.exports = router;
