@@ -4,7 +4,6 @@ const router = express.Router();
 // route
 router.use("/auth", require("./authRoute"));
 router.use("/users", require("./userRoute"));
-router.use("/owners", require("./ownerRoute"));
 router.use("/", require("./modelRoute"));
 
 

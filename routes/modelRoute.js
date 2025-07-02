@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const controllers = require('../controllers/modelController');
 const { 
-  Phone, Location, OwnerLink, 
+  Phone, Location, OwnerLink, Owner,
   Section, WhatWeDoImage, AboutUs, Gallery, Expertise, Blog, Multimedias, Trainings, Publication,
   Service, Team, TeamLink, Project, Partner 
 } = require('../models/index');
@@ -19,7 +19,12 @@ const bindCRUD = (path, Model, includes = [], fieldName = 'key') => {
   router.delete(`/${path}/:id`, controllers.deleteModel(Model));
 };
 
-// Phones, Locations, Links
+// Owners, Phones, Locations, Links
+bindCRUD('owners', Owner, [
+  { model: OwnerLink, as: "links" },
+  { model: Phone, as: "phones" },
+  { model: Location, as: "locations" },
+],);
 bindCRUD('phones', Phone);
 bindCRUD('locations', Location);
 bindCRUD('links', OwnerLink);

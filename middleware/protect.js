@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 // check the user authenticated
-exports.isAuthenticated = async (req, res, next) => {
+exports.protect = async (req, res, next) => {
   let token;
   if (req.cookies.token) {
     token = req.cookies.token;
@@ -20,20 +20,3 @@ exports.isAuthenticated = async (req, res, next) => {
     return res.status(500).json({ success: false, message: 'Server error!', error: error.message });
   }
 };
-
-  
-// admin
-exports.isAdmin = (req, res, next) => {
-    if (req.user.role !== 'admin' ) {
-        return res.status(401).json({success: false, message: "Access denied, You must log as an admin." });
-    }
-    next();
-}
-
-// user
-exports.isUser = (req, res, next) => {
-    if (req.user.role !== 'user' && req.user.role !== 'admin' ) {
-        return res.status(401).json({success: false, message: "Access denied, You must log as a user/admin." });
-    }
-    next();
-}
