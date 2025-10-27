@@ -19,7 +19,7 @@ app.use(cookieParser());
 // });
 // app.use(limiter);
 
-const allowedOrigins = ["http://localhost:3000","https://impactacross.com","https://www.impactacross.com", "https://76.76.21.21"];
+const allowedOrigins = ["http://localhost:3000","https://impactacross.com","https://www.impactacross.com", "https://76.76.21.21", "https://impactacrossdashboard.vercel.app/"];
 const corsOptions = {
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
