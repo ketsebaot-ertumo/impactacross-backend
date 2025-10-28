@@ -8,9 +8,6 @@ const rateLimit = require("express-rate-limit");
 
 const app = express();
 
-app.use(morgan("dev"));
-app.use(bodyParser.urlencoded({ limit: "25mb", extended: true }));
-app.use(cookieParser());
 
 // const limiter = rateLimit({
 //   windowMs: 15 * 60 * 1000,
@@ -42,6 +39,9 @@ app.options("*", cors(corsOptions));
 app.use(cors(corsOptions));
 app.use(express.json({ limit: "2000mb" }));
 app.use(bodyParser.urlencoded({ limit: "2000mb", extended: true }));
+app.use(morgan("dev"));
+// app.use(bodyParser.urlencoded({ limit: "25mb", extended: true }));
+// app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.send("Welcome to `ImpactAcross Backend`!");
